@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * Created by a-morenets on 20.11.2016.
@@ -78,7 +77,7 @@ public class MyArrayList<E> implements List<E> {
      * @return iterator over this list
      */
     public Iterator<E> iterator() {
-        return new Itr();
+        return new MyIterator();
     }
 
     /**
@@ -116,6 +115,19 @@ public class MyArrayList<E> implements List<E> {
     }
 
     /**
+     * Inserts element at given index in this list
+     * @param index      position of new element
+     * @param element    element to be added ti list
+     */
+    public void add(int index, E element) {
+        checkRanges(index);
+        ensureCapacityInternal(size + 1);
+        System.arraycopy(data, index, data, index + 1, size - index);
+        data[index] = element;
+        size++;
+    }
+
+    /**
      * Removes first occurrence of given element from this list
      * @param o    element to be removed
      * @return true if element removed successfully
@@ -130,7 +142,7 @@ public class MyArrayList<E> implements List<E> {
             }
         else
             for (int i = 0; i < size; i++) {
-                if (data[i].equals(o)) {
+                if (o.equals(data[i])) {
                     doRemove(i);
                     return true;
                 }
@@ -144,14 +156,21 @@ public class MyArrayList<E> implements List<E> {
      */
     private void doRemove(int index) {
         int numToShift = size - index - 1;
-        if (numToShift > 0) {
+        if (numToShift > 0)
             System.arraycopy(data, index + 1, data, index, numToShift);
-            data[--size] = null;
-        }
+        data[--size] = null;
     }
 
+    /**
+     * Checks whether this list contains all elements of given collection
+     * @param c    given collection
+     * @return true if this list contains all elements of given collection
+     */
     public boolean containsAll(Collection<?> c) {
-        //TODO
+        for (Object o : c) {
+            if (!contains(o))
+                return false;
+        }
         return false;
     }
 
@@ -251,14 +270,14 @@ public class MyArrayList<E> implements List<E> {
     }
 
     /**
-     * Inserts element at given index in this list
-     * @param index      position of new element
-     * @param element    element to be added ti list
+     * Trims the capacity of this list to be the list's current size
      */
-    public void add(int index, E element) {
-        checkRanges(index);
-        ensureCapacityInternal(size + 1);
-        System.arraycopy(data, index, data, index + 1, size - index);
+    public void trimToSize() {
+        if (size == 0)
+            data = (E[]) new Object[0];
+        else if (data.length > size) {
+            data = Arrays.copyOf(data, size);
+        }
     }
 
     /**
@@ -348,7 +367,7 @@ public class MyArrayList<E> implements List<E> {
             }
         else
             for (int i = 0; i < size; i++) {
-                if (data[i].equals(o))
+                if (o.equals(data[i]))
                     return i;
             }
         return -1;
@@ -367,7 +386,7 @@ public class MyArrayList<E> implements List<E> {
             }
         else
             for (int i = size - 1; i >= 0; i--) {
-                if (data[i].equals(o))
+                if (o.equals(data[i]))
                     return i;
             }
         return -1;
@@ -378,7 +397,7 @@ public class MyArrayList<E> implements List<E> {
      * @return list iterator over this list
      */
     public ListIterator<E> listIterator() {
-        return new ListItr(0);
+        return new MyListIterator(0);
     }
 
     /**
@@ -388,7 +407,7 @@ public class MyArrayList<E> implements List<E> {
      */
     public ListIterator<E> listIterator(int index) {
         checkRanges(index);
-        return new ListItr(index);
+        return new MyListIterator(index);
     }
 
     public List<E> subList(int fromIndex, int toIndex) {
@@ -399,7 +418,7 @@ public class MyArrayList<E> implements List<E> {
     /**
      * Iter class
      */
-    private class Itr implements Iterator {
+    private class MyIterator implements Iterator {
         int cursor; // index of next element to return
 
         @Override
@@ -421,10 +440,10 @@ public class MyArrayList<E> implements List<E> {
     /**
      * ListIter class
      */
-    private class ListItr extends Itr implements ListIterator {
+    private class MyListIterator extends MyIterator implements ListIterator {
         private final int cursor;
 
-        public ListItr(int index) {
+        public MyListIterator(int index) {
             super();
             cursor = index;
         }
@@ -459,4 +478,55 @@ public class MyArrayList<E> implements List<E> {
 
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MyArrayList<?> that = (MyArrayList<?>) o;
+
+        if (size != that.size) return false;
+
+        for (int i = 0; i < size(); i++) {
+            E el = this.get(i);
+            if (el == null) if (that.get(i) != null) {
+                return false;
+            } else {
+                continue;
+            }
+
+            if (!this.get(i).equals(that.get(i))) {
+                return false;
+            }
+        }
+        return true;
+
+/*
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(data, that.data);
+*/
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        for (E e : this)
+            hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+        return hashCode;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < size; i++) {
+            sb.append(get(i));
+            if (i < size - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
