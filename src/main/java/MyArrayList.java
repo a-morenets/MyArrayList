@@ -110,7 +110,7 @@ public class MyArrayList<E> implements List<E> {
      * @return true if element appended successfully, false otherwise
      */
     public boolean add(E t) {
-        // TODO EnsureCapacity(size + 1)
+        ensureCapacityInternal(size + 1);
         data[size++] = t;
         return true;
     }
@@ -155,14 +155,45 @@ public class MyArrayList<E> implements List<E> {
         return false;
     }
 
+    /**
+     * Appends all elements of given collection to this list
+     * @param c    given collection
+     * @return true if all elements appended, false if collection is empty
+     */
     public boolean addAll(Collection<? extends E> c) {
-        //TODO
-        return false;
+        if (c.size() == 0)
+                return false;
+
+        E[] cArr = (E[]) c.toArray();
+        int cArrLen = cArr.length;
+        ensureCapacityInternal(size + cArrLen);
+        System.arraycopy(cArr, 0, data, size, cArrLen);
+        size += cArrLen;
+        return true;
     }
 
+    /**
+     * Appends all elements of given collection to this list
+     * @param c         given collection
+     * @param index     starting index of inserted collection
+     * @return true if all elements appended, false if collection is empty
+     */
     public boolean addAll(int index, Collection<? extends E> c) {
-        //TODO
-        return false;
+        checkRanges(index);
+        if (c.size() == 0)
+            return false;
+
+        E[] cArr = (E[]) c.toArray();
+        int cArrLen = cArr.length;
+        ensureCapacityInternal(size + cArrLen);
+
+        int numToShift = size - index;
+        if (numToShift > 0)
+            System.arraycopy(data, index, data, index + cArrLen, numToShift);
+
+        System.arraycopy(cArr, 0, data, index, cArrLen);
+        size += cArrLen;
+        return true;
     }
 
     public boolean removeAll(Collection<?> c) {
@@ -226,7 +257,7 @@ public class MyArrayList<E> implements List<E> {
      */
     public void add(int index, E element) {
         checkRanges(index);
-        // TODO ensureCapacityInternal(size + 1)
+        ensureCapacityInternal(size + 1);
         System.arraycopy(data, index, data, index + 1, size - index);
     }
 
@@ -248,6 +279,14 @@ public class MyArrayList<E> implements List<E> {
         if (minCapacity > minExpand) {
             ensureExplicitCapacity(minCapacity);
         }
+    }
+
+    private void ensureCapacityInternal(int minCapacity) {
+        if (data.length == 0) {
+            minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+        }
+
+        ensureExplicitCapacity(minCapacity);
     }
 
     private void ensureExplicitCapacity(int minCapacity) {
