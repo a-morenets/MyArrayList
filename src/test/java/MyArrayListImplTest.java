@@ -78,7 +78,6 @@ public class MyArrayListImplTest {
         assertTrue("6. Non empty with null contains null", listWithThreeElementsOneIsNull.contains(null));
     }
 
-    @Ignore
     @Test
     public void testIterator() throws Exception {
         Iterator<Integer> iterator = listWithThreeElementsOneIsNull.iterator();
@@ -91,7 +90,6 @@ public class MyArrayListImplTest {
         assertFalse("7", iterator.hasNext());
     }
 
-    @Ignore
     @Test(expected = NoSuchElementException.class)
     public void testIteratorException() throws Exception {
         Iterator<Integer> iterator = listWithThreeElementsOneIsNull.iterator();
@@ -197,7 +195,6 @@ public class MyArrayListImplTest {
         testList.add(5);
         testList.add(6);
         assertEquals("", testList, listWithThreeElementsOneIsNull);
-
     }
 
     @Ignore
@@ -274,7 +271,6 @@ public class MyArrayListImplTest {
         assertEquals("5. Has no null element", -1, listWithThreeElements.lastIndexOf(null));
     }
 
-    @Ignore
     @Test
     public void testListIterator() throws Exception {
         ListIterator<Integer> iterator = listWithThreeElementsOneIsNull.listIterator();
@@ -295,7 +291,6 @@ public class MyArrayListImplTest {
         assertEquals("15", new Integer(3), iterator.next());
     }
 
-    @Ignore
     @Test(expected = NoSuchElementException.class)
     public void testListIteratorException() throws Exception {
         ListIterator<Integer> iterator = listWithThreeElementsOneIsNull.listIterator();
@@ -313,7 +308,6 @@ public class MyArrayListImplTest {
             listWithThreeElementsOneIsNull.remove(i);
         }
     }
-
 
     @Ignore
     @Test(expected = ConcurrentModificationException.class)
@@ -343,7 +337,6 @@ public class MyArrayListImplTest {
         }
     }
 
-    @Ignore
     @Test
     public void testListIterator1() throws Exception {
         ListIterator<Integer> iterator = listWithThreeElementsOneIsNull.listIterator(1);
