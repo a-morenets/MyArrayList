@@ -351,7 +351,8 @@ public class MyArrayListImplTest {
         assertTrue("2", iterator.hasPrevious());
         assertEquals("3", null, iterator.next());
     }
-/*
+
+    @Ignore
     @Test
     public void testSubList() throws Exception {
         List<Integer> testList = new ArrayList<>(listWithThreeElementsOneIsNull);
@@ -371,7 +372,6 @@ public class MyArrayListImplTest {
         assertEquals("4. two elem", subTestList, listToAssert);
         assertEquals("4.1. two elem", subTestList.get(1), listToAssert.get(1));
     }
-*/
 
     @Test
     public void testEquals() throws Exception {

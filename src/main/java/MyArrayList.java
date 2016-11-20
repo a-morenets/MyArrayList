@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by a-morenets on 20.11.2016.
@@ -418,31 +419,47 @@ public class MyArrayList<E> implements List<E> {
     /**
      * Iter class
      */
-    private class MyIterator implements Iterator {
-        int cursor; // index of next element to return
+    private class MyIterator implements Iterator<E> {
+        int cursor;         // index of next element to return
+        int lastRet = -1;   // index of last element returned; -1 if no such
 
         @Override
         public boolean hasNext() {
-            return false;
+            return cursor != size;
         }
 
         @Override
-        public Object next() {
-            return null;
+        public E next() {
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+            Object[] elementData = MyArrayList.this.data;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i + 1;
+            return (E) elementData[lastRet = i];
         }
 
         @Override
         public void remove() {
+            if (lastRet < 0)
+                throw new IllegalStateException();
 
+            try {
+                MyArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
         }
+
     }
 
     /**
      * ListIter class
      */
-    private class MyListIterator extends MyIterator implements ListIterator {
-        private final int cursor;
-
+    private class MyListIterator extends MyIterator implements ListIterator<E> {
         public MyListIterator(int index) {
             super();
             cursor = index;
@@ -450,62 +467,75 @@ public class MyArrayList<E> implements List<E> {
 
         @Override
         public boolean hasPrevious() {
-            return false;
+            return cursor != 0;
         }
 
         @Override
-        public Object previous() {
-            return null;
+        public E previous() {
+            int i = cursor - 1;
+            if (i < 0)
+                throw new NoSuchElementException();
+            Object[] elementData = MyArrayList.this.data;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i;
+            return (E) elementData[lastRet = i];
         }
 
         @Override
         public int nextIndex() {
-            return 0;
+            return cursor;
         }
 
         @Override
         public int previousIndex() {
-            return 0;
+            return cursor - 1;
+        }
+
+        public void set(E o) {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+
+            try {
+                MyArrayList.this.set(lastRet, o);
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        public void add(E o) {
+            try {
+                int i = cursor;
+                MyArrayList.this.add(i, o);
+                cursor = i + 1;
+                lastRet = -1;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
         }
 
         @Override
-        public void set(Object o) {
-
-        }
-
-        @Override
-        public void add(Object o) {
+        public void forEachRemaining(Consumer action) {
 
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == this)
+            return true;
+        if (!(o instanceof List))
+            return false;
 
-        MyArrayList<?> that = (MyArrayList<?>) o;
-
-        if (size != that.size) return false;
-
-        for (int i = 0; i < size(); i++) {
-            E el = this.get(i);
-            if (el == null) if (that.get(i) != null) {
+        ListIterator<E> e1 = listIterator();
+        ListIterator<?> e2 = ((List<?>) o).listIterator();
+        while (e1.hasNext() && e2.hasNext()) {
+            E o1 = e1.next();
+            Object o2 = e2.next();
+            if (!(o1==null ? o2==null : o1.equals(o2)))
                 return false;
-            } else {
-                continue;
-            }
-
-            if (!this.get(i).equals(that.get(i))) {
-                return false;
-            }
         }
-        return true;
-
-/*
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(data, that.data);
-*/
+        return !(e1.hasNext() || e2.hasNext());
     }
 
     @Override

@@ -2,15 +2,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
  * Created by a-morenets on 20.11.2016.
  */
 public class MyArrayListTest {
+    List<Integer> testIntegerList;
+
     @Before
     public void setUp() throws Exception {
-
+        testIntegerList = new MyArrayList<>();
     }
 
     @After
@@ -20,12 +24,12 @@ public class MyArrayListTest {
 
     @Test
     public void size() throws Exception {
-
+        assertEquals(0, testIntegerList.size());
     }
 
     @Test
     public void isEmpty() throws Exception {
-
+        assertTrue(testIntegerList.isEmpty());
     }
 
     @Test
