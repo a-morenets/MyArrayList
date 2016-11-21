@@ -8,14 +8,6 @@ public class MyArrayList<E> implements List<E> {
     /** Default initial capacity */
     private static final int DEFAULT_CAPACITY = 10;
 
-    /**
-     * The maximum size of array to allocate.
-     * Some VMs reserve some header words in an array.
-     * Attempts to allocate larger arrays may result in
-     * OutOfMemoryError: Requested array size exceeds VM limit
-     */
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-
     /** Array for data */
     private E[] data;
 
@@ -100,9 +92,8 @@ public class MyArrayList<E> implements List<E> {
         if (a.length < size)
             return (T[]) Arrays.copyOf(data, size, a.getClass());
         System.arraycopy(data, 0, a, 0, size);
-        if (a.length > size)
-            a[size] = null;
-        return a;    }
+        return a;
+    }
 
     /**
      * Appends given element to the end of this list
@@ -319,6 +310,14 @@ public class MyArrayList<E> implements List<E> {
         if (minCapacity - data.length > 0)
             grow(minCapacity);
     }
+
+    /**
+     * The maximum size of array to allocate.
+     * Some VMs reserve some header words in an array.
+     * Attempts to allocate larger arrays may result in
+     * OutOfMemoryError: Requested array size exceeds VM limit
+     */
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
      * Increases the capacity to ensure that it can hold at least the
