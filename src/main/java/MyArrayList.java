@@ -216,6 +216,11 @@ public class MyArrayList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * Removes from this list all elements that contains given collection
+     * @param c    given collection
+     * @return true if elements were removed successfully
+     */
     public boolean removeAll(Collection<?> c) {
         //TODO
         return false;
@@ -282,8 +287,8 @@ public class MyArrayList<E> implements List<E> {
     }
 
     /**
-     * Increases the capacity of this <tt>ArrayList</tt> instance, if
-     * necessary, to ensure that it can hold at least the number of elements
+     * Increases the capacity of this list, if necessary,
+     * to ensure that it can hold at least the number of elements
      * specified by the minimum capacity argument.
      *
      * @param   minCapacity   the desired minimum capacity
@@ -433,11 +438,11 @@ public class MyArrayList<E> implements List<E> {
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();
-            Object[] elementData = MyArrayList.this.data;
+            E[] elementData = MyArrayList.this.data;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i + 1;
-            return (E) elementData[lastRet = i];
+            return elementData[lastRet = i];
         }
 
         @Override
@@ -475,11 +480,11 @@ public class MyArrayList<E> implements List<E> {
             int i = cursor - 1;
             if (i < 0)
                 throw new NoSuchElementException();
-            Object[] elementData = MyArrayList.this.data;
+            E[] elementData = MyArrayList.this.data;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i;
-            return (E) elementData[lastRet = i];
+            return elementData[lastRet = i];
         }
 
         @Override
@@ -527,15 +532,15 @@ public class MyArrayList<E> implements List<E> {
         if (!(o instanceof List))
             return false;
 
-        ListIterator<E> e1 = listIterator();
-        ListIterator<?> e2 = ((List<?>) o).listIterator();
-        while (e1.hasNext() && e2.hasNext()) {
-            E o1 = e1.next();
-            Object o2 = e2.next();
-            if (!(o1==null ? o2==null : o1.equals(o2)))
+        List<E> that = (List<E>) o;
+        if (size != that.size())
+            return false;
+
+        for (int i = 0; i < size; i++) {
+            if (!(data[i] == null ? that.get(i) == null : data[i].equals(that.get(i))))
                 return false;
         }
-        return !(e1.hasNext() || e2.hasNext());
+        return true;
     }
 
     @Override
