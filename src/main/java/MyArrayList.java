@@ -14,6 +14,9 @@ public class MyArrayList<E> implements List<E> {
     /** Size of this list */
     private int size;
 
+    /** Modifications counter */
+    private int modCount;
+
     /**
      * Constructs this list with default initial capacity
      */
@@ -148,10 +151,26 @@ public class MyArrayList<E> implements List<E> {
      * @param index    index of element to be removed
      */
     private void doRemove(int index) {
+        modCount++;
         int numToShift = size - index - 1;
         if (numToShift > 0)
             System.arraycopy(data, index + 1, data, index, numToShift);
         data[--size] = null;
+    }
+
+    /**
+     * Removes element of this list at given index
+     * @param index    index of element to be removed
+     * @return removed element or null if no such element contains in this list
+     */
+    public E remove(int index) {
+        checkRanges(index);
+
+//        modCount++;
+        E removedElement = data[index];
+        doRemove(index);
+
+        return removedElement;
     }
 
     /**
@@ -227,6 +246,7 @@ public class MyArrayList<E> implements List<E> {
      * Clears this list
      */
     public void clear() {
+        modCount++;
         for (int i = 0; i < size; i++) {
             data[i] = null;
         }
@@ -271,6 +291,7 @@ public class MyArrayList<E> implements List<E> {
      * Trims the capacity of this list to be the list's current size
      */
     public void trimToSize() {
+        modCount++;
         if (size == 0)
             data = (E[]) new Object[0];
         else if (data.length > size) {
@@ -307,6 +328,7 @@ public class MyArrayList<E> implements List<E> {
     }
 
     private void ensureExplicitCapacity(int minCapacity) {
+        modCount++;
         // overflow-conscious code
         if (minCapacity - data.length > 0)
             grow(minCapacity);
@@ -344,20 +366,6 @@ public class MyArrayList<E> implements List<E> {
         return (minCapacity > MAX_ARRAY_SIZE) ?
                 Integer.MAX_VALUE :
                 MAX_ARRAY_SIZE;
-    }
-
-    /**
-     * Removes element of this list at given index
-     * @param index    index of element to be removed
-     * @return removed element or null if no such element contains in this list
-     */
-    public E remove(int index) {
-        checkRanges(index);
-
-        E removedElement = data[index];
-        doRemove(index);
-
-        return removedElement;
     }
 
     /**
@@ -427,6 +435,7 @@ public class MyArrayList<E> implements List<E> {
     private class MyIterator implements Iterator<E> {
         int cursor;         // index of next element to return
         int lastRet = -1;   // index of last element returned; -1 if no such
+        int expectedModCount = modCount; // modifications counter must be equal to modCount of this list
 
         @Override
         public boolean hasNext() {
@@ -435,6 +444,7 @@ public class MyArrayList<E> implements List<E> {
 
         @Override
         public E next() {
+            checkForComodification();
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();
@@ -449,16 +459,22 @@ public class MyArrayList<E> implements List<E> {
         public void remove() {
             if (lastRet < 0)
                 throw new IllegalStateException();
+            checkForComodification();
 
             try {
                 MyArrayList.this.remove(lastRet);
                 cursor = lastRet;
                 lastRet = -1;
+                expectedModCount = modCount;
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
         }
 
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+        }
     }
 
     /**
@@ -477,6 +493,7 @@ public class MyArrayList<E> implements List<E> {
 
         @Override
         public E previous() {
+            checkForComodification();
             int i = cursor - 1;
             if (i < 0)
                 throw new NoSuchElementException();
@@ -500,6 +517,7 @@ public class MyArrayList<E> implements List<E> {
         public void set(E o) {
             if (lastRet < 0)
                 throw new IllegalStateException();
+            checkForComodification();
 
             try {
                 MyArrayList.this.set(lastRet, o);
@@ -509,11 +527,13 @@ public class MyArrayList<E> implements List<E> {
         }
 
         public void add(E o) {
+            checkForComodification();
             try {
                 int i = cursor;
                 MyArrayList.this.add(i, o);
                 cursor = i + 1;
                 lastRet = -1;
+                expectedModCount = modCount;
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
