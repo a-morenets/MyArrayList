@@ -161,7 +161,7 @@ public class MyArrayListTest {
     }
 
     @Test
-    public void addAll1() throws Exception {
+    public void addAll_atIndex() throws Exception {
 
     }
 
@@ -177,11 +177,22 @@ public class MyArrayListTest {
 
     @Test
     public void clear() throws Exception {
+        listWith3Elements.clear();
+        assertEquals(0, listWith3Elements.size());
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void get_OutOfBounds() throws Exception {
 
     }
 
     @Test
     public void get() throws Exception {
+
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void set_OutOfBounds() throws Exception {
 
     }
 
@@ -216,7 +227,7 @@ public class MyArrayListTest {
     }
 
     @Test
-    public void listIterator1() throws Exception {
+    public void listIterator_fromIndex() throws Exception {
 
     }
 
