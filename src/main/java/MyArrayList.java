@@ -59,7 +59,7 @@ public class MyArrayList<E> implements List<E> {
             }
         else
             for (int i = 0; i < size; i++) {
-                if (data[i].equals(o))
+                if (o.equals(data[i]))
                         return true;
             }
         return false;
