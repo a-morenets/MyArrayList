@@ -110,6 +110,7 @@ public class MyArrayList<E> implements List<E> {
      * Inserts element at given index in this list
      * @param index      position of new element
      * @param element    element to be added ti list
+     * @throws IndexOutOfBoundsException if index out of range
      */
     public void add(int index, E element) {
         checkRanges(index);
