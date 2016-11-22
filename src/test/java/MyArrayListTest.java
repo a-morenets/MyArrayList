@@ -214,12 +214,14 @@ public class MyArrayListTest {
 
     @Test
     public void trimToSize() throws Exception {
+        // init
         MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
         MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
         testListWith3Elements.add(5);
         testListWith3Elements.add(null);
         testListWith3Elements.add(0);
 
+        // lists are same as at the beginning
         testListEmpty.trimToSize();
         assertArrayEquals(arrayEmpty, testListEmpty.toArray());
         testListWith3Elements.trimToSize();
@@ -228,6 +230,7 @@ public class MyArrayListTest {
 
     @Test(expected = OutOfMemoryError.class)
     public void ensureCapacity() throws Exception {
+        // init
         MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
         MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
         testListWith3Elements.add(5);
@@ -260,25 +263,32 @@ public class MyArrayListTest {
 
     @Test
     public void listIterator() throws Exception {
+        // empty list - no previous, no next
         ListIterator<Integer> listIterEmpty = listEmpty.listIterator();
         assertFalse(listIterEmpty.hasPrevious());
         assertFalse(listIterEmpty.hasNext());
 
+        // non-empty list
         ListIterator<Integer> listIter = listWith3Elements.listIterator();
         assertFalse(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(Integer.valueOf(5), listIter.next());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(null, listIter.next());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(Integer.valueOf(0), listIter.next());
         assertTrue(listIter.hasPrevious());
         assertFalse(listIter.hasNext());
+        // previous()
         assertEquals(Integer.valueOf(0), listIter.previous());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(Integer.valueOf(0), listIter.next());
     }
 
@@ -291,19 +301,40 @@ public class MyArrayListTest {
     @Test
     public void listIterator_fromIndex() throws Exception {
         ListIterator<Integer> listIter = listWith3Elements.listIterator(1);
-
+        // cursor == 1
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(null, listIter.next());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(Integer.valueOf(0), listIter.next());
         assertTrue(listIter.hasPrevious());
         assertFalse(listIter.hasNext());
+        // previous()
         assertEquals(Integer.valueOf(0), listIter.previous());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
+        // next()
         assertEquals(Integer.valueOf(0), listIter.next());
+        assertFalse(listIter.hasNext());
+
+        // previousIndex()
+        assertEquals(2, listIter.previousIndex());
+        // nextIndex()
+        assertEquals(3, listIter.nextIndex());
+
+        // set()
+        listIter.set(999);
+        // previous()
+        assertEquals(Integer.valueOf(999), listIter.previous());
+
+        // add()
+        listIter.add(33);
+        assertEquals(4, listWith3Elements.size());
+        assertEquals(Integer.valueOf(33), listWith3Elements.get(2));
+        assertEquals(Integer.valueOf(999), listWith3Elements.get(3));
     }
 
     @Ignore
@@ -314,7 +345,7 @@ public class MyArrayListTest {
 
     @Test
     public void equals() throws Exception {
-
+        assertEquals(Arrays.asList(arrayWith3Elements), listWith3Elements);
     }
 
 }
