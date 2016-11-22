@@ -113,12 +113,14 @@ public class MyArrayListTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void add_atIndexOutOfRangeGreaterThanListSize() throws Exception {
-        listWith3Elements.add(3, 777);
+        listWith3Elements.add(3, 777); // allowed!
+        listWith3Elements.add(5, 777); // exception
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void add_atIndexEmptyList() throws Exception {
-        listEmpty.add(0, 777);
+        listEmpty.add(0, 777); // allowed!
+        listEmpty.add(2, 555); // exception
     }
 
     @Test
