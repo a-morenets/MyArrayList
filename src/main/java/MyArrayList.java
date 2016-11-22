@@ -116,7 +116,7 @@ public class MyArrayList<E> implements List<E> {
      * @throws IndexOutOfBoundsException if index out of range
      */
     public void add(int index, E element) {
-        checkRanges(index);
+        checkRangesForAdd(index);
         ensureCapacityInternal(size + 1);
         System.arraycopy(data, index, data, index + 1, size - index);
         data[index] = element;
@@ -210,7 +210,7 @@ public class MyArrayList<E> implements List<E> {
      * @return true if all elements appended, false if collection is empty
      */
     public boolean addAll(int index, Collection<? extends E> c) {
-        checkRanges(index);
+        checkRangesForAdd(index);
         if (c.size() == 0)
             return false;
 
@@ -270,6 +270,15 @@ public class MyArrayList<E> implements List<E> {
      */
     private void checkRanges(int index) {
         if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index = " + index + ", size = " + size);
+    }
+
+    /**
+     * Helper method for add() and addAll() - Checks whether index is out of bounds
+     * @param index    index to be checked
+     */
+    private void checkRangesForAdd(int index) {
+        if (index < 0 || index > size) // > instead of >=
             throw new IndexOutOfBoundsException("Index = " + index + ", size = " + size);
     }
 
