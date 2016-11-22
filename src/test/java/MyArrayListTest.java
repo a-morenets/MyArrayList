@@ -1,8 +1,8 @@
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -59,6 +59,9 @@ public class MyArrayListTest {
 
     @Test
     public void iterator() throws Exception {
+        Iterator<Integer> itrEmptyList = listEmpty.iterator();
+        assertFalse(itrEmptyList.hasNext());
+
         Iterator<Integer> itr = listWith3Elements.iterator();
         assertTrue(itr.hasNext());
         assertEquals(Integer.valueOf(5), itr.next());
@@ -69,6 +72,12 @@ public class MyArrayListTest {
         assertEquals(Integer.valueOf(0), itr.next());
         assertFalse(itr.hasNext());
         assertEquals(2, listWith3Elements.size());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void iterator_NoSuchElementException() throws Exception {
+        Iterator<Integer> itrEmptyList = listEmpty.iterator();
+        itrEmptyList.next();
     }
 
     @Test
@@ -165,14 +174,16 @@ public class MyArrayListTest {
 
     }
 
+    @Ignore
     @Test
     public void removeAll() throws Exception {
-
+        fail("Not implemented.");
     }
 
+    @Ignore
     @Test
     public void retainAll() throws Exception {
-
+        fail("Not implemented.");
     }
 
     @Test
@@ -183,57 +194,118 @@ public class MyArrayListTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void get_OutOfBounds() throws Exception {
-
+        listEmpty.get(0);
     }
 
     @Test
     public void get() throws Exception {
-
+        assertEquals(null, listWith3Elements.get(1));
+        assertEquals(Integer.valueOf(0), listWith3Elements.get(2));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void set_OutOfBounds() throws Exception {
-
+        listWith3Elements.set(100500, 999);
     }
 
     @Test
     public void set() throws Exception {
-
+        listWith3Elements.set(2, 222);
+        assertEquals(Integer.valueOf(222), listWith3Elements.get(2));
     }
 
     @Test
     public void trimToSize() throws Exception {
+        MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
+        MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
+        testListWith3Elements.add(5);
+        testListWith3Elements.add(null);
+        testListWith3Elements.add(0);
 
+//        listEmpty.trimToSize(); // why???
+        testListEmpty.trimToSize();
+        assertArrayEquals(arrayEmpty, testListEmpty.toArray());
+//        listWith3Elements.trimToSize(); // why???
+        testListWith3Elements.trimToSize();
+        assertArrayEquals(arrayWith3Elements, testListWith3Elements.toArray());
     }
 
     @Test
     public void ensureCapacity() throws Exception {
-
+//        listEmpty.ensureCapacity(); // why???
+//        listWith3Elements.ensureCapacity(); // why???
     }
 
     @Test
     public void indexOf() throws Exception {
+        assertEquals(-1, listEmpty.indexOf(0));
 
+        assertEquals(1, listWith3Elements.indexOf(null));
+        assertEquals(2, listWith3Elements.indexOf(0));
+        assertEquals(-1, listWith3Elements.indexOf(100500));
     }
 
     @Test
     public void lastIndexOf() throws Exception {
+        assertEquals(-1, listEmpty.lastIndexOf(0));
 
+        assertEquals(2, listWith3Elements.lastIndexOf(0));
+        assertEquals(0, listWith3Elements.lastIndexOf(5));
+        assertEquals(-1, listWith3Elements.lastIndexOf(100500));
     }
 
     @Test
     public void listIterator() throws Exception {
+        ListIterator<Integer> listIterEmpty = listEmpty.listIterator();
+        assertFalse(listIterEmpty.hasPrevious());
+        assertFalse(listIterEmpty.hasNext());
 
+        ListIterator<Integer> listIter = listWith3Elements.listIterator();
+        assertFalse(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(Integer.valueOf(5), listIter.next());
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(null, listIter.next());
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.next());
+        assertTrue(listIter.hasPrevious());
+        assertFalse(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.previous());
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.next());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void listIterator_NoSuchElementException() throws Exception {
+        ListIterator<Integer> listItrEmptyList = listWith3Elements.listIterator();
+        listItrEmptyList.previous();
     }
 
     @Test
     public void listIterator_fromIndex() throws Exception {
+        ListIterator<Integer> listIter = listWith3Elements.listIterator(1);
 
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(null, listIter.next());
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.next());
+        assertTrue(listIter.hasPrevious());
+        assertFalse(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.previous());
+        assertTrue(listIter.hasPrevious());
+        assertTrue(listIter.hasNext());
+        assertEquals(Integer.valueOf(0), listIter.next());
     }
 
+    @Ignore
     @Test
     public void subList() throws Exception {
-
+        fail("Not implemented.");
     }
 
     @Test

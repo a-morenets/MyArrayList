@@ -292,10 +292,10 @@ public class MyArrayList<E> implements List<E> {
      */
     public void trimToSize() {
         modCount++;
-        if (size == 0)
-            data = (E[]) new Object[0];
-        else if (data.length > size) {
-            data = Arrays.copyOf(data, size);
+        if (size < data.length) {
+            data = (size == 0)
+                    ? (E[]) new Object[] {}
+                    : Arrays.copyOf(data, size);
         }
     }
 
