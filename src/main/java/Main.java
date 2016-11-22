@@ -35,6 +35,18 @@ public class Main {
         li.add(33);
 
         System.out.println(a);
+
+        // MyLinkedList
+        List<String> myLinkedList = new MyLinkedList<>();
+        System.out.println("myLinkedList.size() = " + myLinkedList.size());
+        System.out.println(myLinkedList);
+
+        myLinkedList.add("5");
+        myLinkedList.add(null);
+        myLinkedList.add("null");
+        myLinkedList.add("ZERO");
+        System.out.println("myLinkedList.size() = " + myLinkedList.size());
+        System.out.println(myLinkedList);
     }
 
 }

@@ -280,7 +280,7 @@ public class MyLinkedList<E> implements List<E> {
             if (i >= size)
                 throw new NoSuchElementException();
             cursor = i + 1;
-            return (E) MyLinkedList.this.get(lastRet = cursor);
+            return (E) MyLinkedList.this.get(lastRet = i);
         }
 
         @Override
