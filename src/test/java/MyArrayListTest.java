@@ -152,26 +152,24 @@ public class MyArrayListTest {
 
     @Test
     public void remove_atIndex() throws Exception {
-        listWith3Elements.remove(0);
-        assertEquals(2, listWith3Elements.size());
-        listWith3Elements.remove(1);
-        assertEquals(1, listWith3Elements.size());
+        assertEquals(Integer.valueOf(5), listWith3Elements.remove(0));
+        assertEquals(Integer.valueOf(0), listWith3Elements.remove(1));
         assertEquals(null, listWith3Elements.remove(0));
     }
 
     @Test
     public void containsAll() throws Exception {
-
+        //TODO
     }
 
     @Test
     public void addAll() throws Exception {
-
+        //TODO
     }
 
     @Test
     public void addAll_atIndex() throws Exception {
-
+        //TODO
     }
 
     @Ignore
@@ -222,18 +220,24 @@ public class MyArrayListTest {
         testListWith3Elements.add(null);
         testListWith3Elements.add(0);
 
-//        listEmpty.trimToSize(); // why???
         testListEmpty.trimToSize();
         assertArrayEquals(arrayEmpty, testListEmpty.toArray());
-//        listWith3Elements.trimToSize(); // why???
         testListWith3Elements.trimToSize();
         assertArrayEquals(arrayWith3Elements, testListWith3Elements.toArray());
     }
 
-    @Test
+    @Test(expected = OutOfMemoryError.class)
     public void ensureCapacity() throws Exception {
-//        listEmpty.ensureCapacity(); // why???
-//        listWith3Elements.ensureCapacity(); // why???
+        MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
+        MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
+        testListWith3Elements.add(5);
+        testListWith3Elements.add(null);
+        testListWith3Elements.add(0);
+
+        testListEmpty.ensureCapacity(1);
+        assertArrayEquals(arrayEmpty, testListEmpty.toArray());
+        testListWith3Elements.ensureCapacity(Integer.MAX_VALUE);
+        assertArrayEquals(arrayWith3Elements, testListWith3Elements.toArray());
     }
 
     @Test
@@ -310,16 +314,6 @@ public class MyArrayListTest {
 
     @Test
     public void equals() throws Exception {
-
-    }
-
-    @Test
-    public void hashCodeTest() throws Exception {
-
-    }
-
-    @Test
-    public void toStringTest() throws Exception {
 
     }
 
