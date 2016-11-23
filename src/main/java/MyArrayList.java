@@ -487,7 +487,7 @@ public class MyArrayList<E> implements List<E> {
     }
 
     /**
-     * ListIter class
+     * MyListIterator class
      */
     private class MyListIterator extends MyIterator implements ListIterator<E> {
         public MyListIterator(int index) {
@@ -589,8 +589,7 @@ public class MyArrayList<E> implements List<E> {
                 sb.append(", ");
             }
         }
-        sb.append("]");
-        return sb.toString();
+        return sb.toString() + "]";
     }
 
 }

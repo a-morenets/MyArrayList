@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 /**
  * Created by a-morenets on 20.11.2016.
  */
-public class MyArrayListTest {
+public class MyLinkedListTest {
     /** empty list */
     private List<Integer> listEmpty;
 
@@ -27,8 +27,8 @@ public class MyArrayListTest {
         arrayEmpty = new Integer[] {};
         arrayWith3Elements = new Integer[] {5, null, 0};
 
-        listEmpty = new MyArrayList<>();
-        listWith3Elements = new MyArrayList<>();
+        listEmpty = new MyLinkedList<>();
+        listWith3Elements = new MyLinkedList<>();
 
         // fill list with same array elements
         for (int i = 0; i < arrayWith3Elements.length; i++) {
@@ -165,17 +165,20 @@ public class MyArrayListTest {
 
     @Test
     public void containsAll() throws Exception {
-        //TODO
+        // TODO
+        fail("Not implemented.");
     }
 
     @Test
     public void addAll() throws Exception {
-        //TODO
+        // TODO
+        fail("Not implemented.");
     }
 
     @Test
     public void addAll_atIndex() throws Exception {
-        //TODO
+        // TODO
+        fail("Not implemented.");
     }
 
     @Ignore
@@ -216,37 +219,6 @@ public class MyArrayListTest {
     public void set() throws Exception {
         listWith3Elements.set(2, 222);
         assertEquals(Integer.valueOf(222), listWith3Elements.get(2));
-    }
-
-    @Test
-    public void trimToSize() throws Exception {
-        // init
-        MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
-        MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
-        testListWith3Elements.add(5);
-        testListWith3Elements.add(null);
-        testListWith3Elements.add(0);
-
-        // lists are same as at the beginning
-        testListEmpty.trimToSize();
-        assertArrayEquals(arrayEmpty, testListEmpty.toArray());
-        testListWith3Elements.trimToSize();
-        assertArrayEquals(arrayWith3Elements, testListWith3Elements.toArray());
-    }
-
-    @Test(expected = OutOfMemoryError.class)
-    public void ensureCapacity() throws Exception {
-        // init
-        MyArrayList<Integer> testListEmpty = new MyArrayList<Integer>() {};
-        MyArrayList<Integer> testListWith3Elements = new MyArrayList<>();
-        testListWith3Elements.add(5);
-        testListWith3Elements.add(null);
-        testListWith3Elements.add(0);
-
-        testListEmpty.ensureCapacity(1);
-        assertArrayEquals(arrayEmpty, testListEmpty.toArray());
-        testListWith3Elements.ensureCapacity(Integer.MAX_VALUE);
-        assertArrayEquals(arrayWith3Elements, testListWith3Elements.toArray());
     }
 
     @Test
