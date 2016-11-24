@@ -53,12 +53,27 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] a = new Object[size];
+        Node<E> current = head.getNext();
+        for (int i = 0; i < size; i++) {
+            a[i] = current.getElement();
+            current = current.getNext();
+        }
+        return a;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        if (a.length < size) {
+            a = (T[]) new Object[size];
+        }
+
+        Node<E> current = head.getNext();
+        for (int i = 0; i < size; i++) {
+            a[i] = (T) current.getElement();
+            current = current.getNext();
+        }
+        return a;
     }
 
     @Override
@@ -85,26 +100,31 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
+        Objects.requireNonNull(c);
         return false;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
+        Objects.requireNonNull(c);
         return false;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
+        checkRangesForAdd(index);
         return false;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
+        Objects.requireNonNull(c);
         return false;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
+        Objects.requireNonNull(c);
         return false;
     }
 
@@ -428,7 +448,7 @@ public class MyLinkedList<E> implements List<E> {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof List))
+        if (!(this.getClass().equals(o.getClass())))
             return false;
 
         Iterator<E> e1 = iterator();

@@ -179,11 +179,13 @@ public class MyArrayList<E> implements List<E> {
      * @return true if this list contains all elements of given collection
      */
     public boolean containsAll(Collection<?> c) {
+        Objects.requireNonNull(c);
+
         for (Object o : c) {
             if (!contains(o))
                 return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -233,11 +235,13 @@ public class MyArrayList<E> implements List<E> {
      * @return true if elements were removed successfully
      */
     public boolean removeAll(Collection<?> c) {
+        Objects.requireNonNull(c);
         //TODO
         return false;
     }
 
     public boolean retainAll(Collection<?> c) {
+        Objects.requireNonNull(c);
         //TODO
         return false;
     }
