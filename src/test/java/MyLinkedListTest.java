@@ -1,9 +1,10 @@
+import my_linkedlist.MyLinkedList;
 import org.junit.BeforeClass;
 
 /**
  * Created by a-morenets on 20.11.2016.
  */
-public class MyLinkedListTest extends MyListAbstractTest {
+public class MyLinkedListTest extends MyListTest {
 
     @BeforeClass
     public static void init() throws Exception {

@@ -1,7 +1,14 @@
+package my_linkedlist;
+
 import java.util.*;
 
 /**
+ * LinkedList implementation
  * Created by a-morenets on 22.11.2016.
+ * 
+ * To avoid the special case of inserting and removing from the empty list this doubly linked list
+ * uses a dummy header and trailer nodes. These nodes are created when the list is created and are NOT
+ * parts of the list. An empty list is one which only contains the dummy header and trailer nodes connected.
  */
 public class MyLinkedList<E> implements List<E> {
     private Node<E> head;
@@ -12,8 +19,8 @@ public class MyLinkedList<E> implements List<E> {
         head = new Node<>();
         tail = new Node<>();
 
-        head.setNext(tail);
-        tail.setPrev(head);
+        head.next = tail;
+        tail.prev = head;
 
         size = 0;
     }
@@ -30,18 +37,18 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-        Node<E> current = head.getNext();
+        Node<E> current = head.next;
         if (o == null)
-            while (current.getNext() != null) {
-                if (current.getElement() == null)
+            while (current.next != null) {
+                if (current.element == null)
                     return true;
-                current = current.getNext();
+                current = current.next;
             }
         else
-            while (current.getNext() != null) {
-                if (o.equals(current.getElement()))
+            while (current.next != null) {
+                if (o.equals(current.element))
                     return true;
-                current = current.getNext();
+                current = current.next;
             }
         return false;
     }
@@ -54,10 +61,10 @@ public class MyLinkedList<E> implements List<E> {
     @Override
     public Object[] toArray() {
         Object[] a = new Object[size];
-        Node<E> current = head.getNext();
+        Node<E> current = head.next;
         for (int i = 0; i < size; i++) {
-            a[i] = current.getElement();
-            current = current.getNext();
+            a[i] = current.element;
+            current = current.next;
         }
         return a;
     }
@@ -68,10 +75,10 @@ public class MyLinkedList<E> implements List<E> {
             a = (T[]) new Object[size];
         }
 
-        Node<E> current = head.getNext();
+        Node<E> current = head.next;
         for (int i = 0; i < size; i++) {
-            a[i] = (T) current.getElement();
-            current = current.getNext();
+            a[i] = (T) current.element;
+            current = current.next;
         }
         return a;
     }
@@ -89,10 +96,10 @@ public class MyLinkedList<E> implements List<E> {
      */
     private boolean insertNodeBefore(Node<E> node, E element) {
         Node<E> newNode = new Node<>(element);
-        newNode.setPrev(node.getPrev());
-        node.getPrev().setNext(newNode);
-        node.setPrev(newNode);
-        newNode.setNext(node);
+        newNode.prev = node.prev;
+        node.prev.next = newNode;
+        node.prev = newNode;
+        newNode.next = node;
 
         size++;
         return true;
@@ -101,44 +108,52 @@ public class MyLinkedList<E> implements List<E> {
     @Override
     public boolean containsAll(Collection<?> c) {
         Objects.requireNonNull(c);
+        // TODO
         return false;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
         Objects.requireNonNull(c);
-        return false;
+        for (Object o : c) {
+            add((E) o);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         checkRangesForAdd(index);
+        Objects.requireNonNull(c);
+        // TODO
         return false;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
         Objects.requireNonNull(c);
+        // TODO
         return false;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
         Objects.requireNonNull(c);
+        // TODO
         return false;
     }
 
     @Override
     public void clear() {
-        head.setNext(tail);
-        tail.setPrev(head);
+        head.next = tail;
+        tail.prev = head;
 
         size = 0;
     }
 
     @Override
     public E get(int index) {
-        return getNodeAt(index).getElement();
+        return getNodeAt(index).element;
     }
 
     /**
@@ -167,20 +182,21 @@ public class MyLinkedList<E> implements List<E> {
     private Node<E> getNodeAt(int index) {
         checkRanges(index);
         int counter = 0;
-        Node<E> current = head.getNext();
-        while(current.getNext() != null) {
+        Node<E> current = head.next;
+        while(current.next != null) {
             if (counter++ == index)
                 return current;
-            current = current.getNext();
+            current = current.next;
         }
         return null;
     }
 
     @Override
     public E set(int index, E element) {
+        checkRanges(index);
         Node<E> node = getNodeAt(index);
-        E prevElement = node.getElement();
-        node.setElement(element);
+        E prevElement = node.element;
+        node.element = element;
 
         return prevElement;
     }
@@ -193,14 +209,14 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
-        Node<E> current = head.getNext();
-        while (current.getNext() != null) {
-            if (o == null && current.getElement() == null
-                    || o != null && o.equals(current.getElement())) {
+        Node<E> current = head.next;
+        while (current.next != null) {
+            if (o == null && current.element == null
+                    || o != null && o.equals(current.element)) {
                 removeNode(current);
                 return true;
             }
-            current = current.getNext();
+            current = current.next;
         }
 
         return false;
@@ -208,7 +224,7 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        return removeNodeAt(index).getElement();
+        return removeNodeAt(index).element;
     }
 
     /**
@@ -229,23 +245,23 @@ public class MyLinkedList<E> implements List<E> {
      * @param node
      */
     private void removeNode(Node<E> node) {
-        node.getPrev().setNext(node.getNext());
-        node.getNext().setPrev(node.getPrev());
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
         size--;
     }
 
     @Override
     public int indexOf(Object o) {
         int index = 0;
-        Node<E> current = head.getNext();
-        while(current.getNext() != null) {
+        Node<E> current = head.next;
+        while(current.next != null) {
             if (o == null) {
-                if (current.getElement() == null)
+                if (current.element == null)
                     return index;
-            } else if (o.equals(current.getElement()))
+            } else if (o.equals(current.element))
                 return index;
             index++;
-            current = current.getNext();
+            current = current.next;
         }
         return -1;
     }
@@ -253,15 +269,15 @@ public class MyLinkedList<E> implements List<E> {
     @Override
     public int lastIndexOf(Object o) {
         int index = 0;
-        Node<E> current = tail.getPrev();
-        while (current.getPrev() != null) {
+        Node<E> current = tail.prev;
+        while (current.prev != null) {
             if (o == null) {
-                if (current.getElement() == null)
+                if (current.element == null)
                     return (size - 1) - index;
-            } else if (o.equals(current.getElement()))
+            } else if (o.equals(current.element))
                 return (size - 1) - index;
             index++;
-            current = current.getPrev();
+            current = current.prev;
         }
         return -1;
     }
@@ -378,6 +394,48 @@ public class MyLinkedList<E> implements List<E> {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof List))
+            return false;
+
+        List<?> that = (List<?>) o;
+        if (size != that.size())
+            return false;
+
+        Node<E> current = head.next;
+        for (int i = 0; i < size; i++) {
+            if (!(current.element == null ? that.get(i) == null : current.element.equals(that.get(i))))
+                return false;
+            current = current.next;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        for (E e : this)
+            hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+        return hashCode;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Node<E> current = head.next;
+        while (current.next != null) {
+            sb.append(current.element);
+            if (current.next.next != null)
+                sb.append(", ");
+            current = current.next;
+        }
+
+        return sb.toString() + "]";
+    }
+
     /**
      * Inner class represents one node
      * @param <E>
@@ -416,71 +474,5 @@ public class MyLinkedList<E> implements List<E> {
             this.next = next;
             this.element = element;
         }
-
-        // Getters & Setters
-
-        public Node<E> getPrev() {
-            return prev;
-        }
-
-        public void setPrev(Node<E> prev) {
-            this.prev = prev;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        public E getElement() {
-            return element;
-        }
-
-        public void setElement(E element) {
-            this.element = element;
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(this.getClass().equals(o.getClass())))
-            return false;
-
-        Iterator<E> e1 = iterator();
-        Iterator<?> e2 = ((List<?>) o).iterator();
-        while (e1.hasNext() && e2.hasNext()) {
-            E o1 = e1.next();
-            Object o2 = e2.next();
-            if (!(o1==null ? o2==null : o1.equals(o2)))
-                return false;
-        }
-        return !(e1.hasNext() || e2.hasNext());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = head != null ? head.hashCode() : 0;
-        result = 31 * result + (tail != null ? tail.hashCode() : 0);
-        result = 31 * result + size;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        Node<E> current = head.getNext();
-        while (current.getNext() != null) {
-            sb.append(current.getElement());
-            if (current.getNext().getNext() != null)
-                sb.append(", ");
-            current = current.getNext();
-        }
-
-        return sb.toString() + "]";
     }
 }

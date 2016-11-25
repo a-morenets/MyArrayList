@@ -8,9 +8,10 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * Tests for List<E>
  * Created by a-morenets on 24.11.2016.
  */
-public abstract class MyListAbstractTest {
+public class MyListTest {
 
     /** Empty list */
     protected static List<Integer> listEmpty;

@@ -1,3 +1,4 @@
+import my_arraylist.MyArrayList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -219,7 +220,7 @@ public class MyArrayListImplTest {
     @Test
     public void testClear() throws Exception {
         listWithThreeElementsOneIsNull.clear();
-        for (Object i : ((MyArrayList) listWithThreeElementsOneIsNull).getInnerArray()) {
+        for (Object i : ((my_arraylist.MyArrayList) listWithThreeElementsOneIsNull).getInnerArray()) {
             assertNull(i);
         }
     }

@@ -1,9 +1,6 @@
-import com.sun.org.apache.xpath.internal.functions.Function;
+import my_linkedlist.MyLinkedList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by a-morenets on 22.11.2016.
@@ -36,7 +33,7 @@ public class Main {
 
         System.out.println(a);
 
-        // MyLinkedList
+        // my_linkedlist.MyLinkedList
         List<String> myLinkedList = new MyLinkedList<>();
         System.out.println("myLinkedList.size() = " + myLinkedList.size());
         System.out.println(myLinkedList);
@@ -47,6 +44,11 @@ public class Main {
         myLinkedList.add("ZERO");
         System.out.println("myLinkedList.size() = " + myLinkedList.size());
         System.out.println(myLinkedList);
+
+        Set<Integer> intSet = new TreeSet<>();
+        intSet.add(99);
+        intSet.add(null);
+        intSet.add(0);
     }
 
 }

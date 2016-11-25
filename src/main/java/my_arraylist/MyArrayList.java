@@ -1,7 +1,10 @@
+package my_arraylist;
+
 import java.util.*;
 import java.util.function.Consumer;
 
 /**
+ * ArrayList implementation
  * Created by a-morenets on 20.11.2016.
  */
 public class MyArrayList<E> implements List<E> {
@@ -565,7 +568,7 @@ public class MyArrayList<E> implements List<E> {
         if (!(o instanceof List))
             return false;
 
-        List<E> that = (List<E>) o;
+        List<?> that = (List<?>) o;
         if (size != that.size())
             return false;
 
