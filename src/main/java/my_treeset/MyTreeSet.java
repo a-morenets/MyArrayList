@@ -240,10 +240,6 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MyTreeSet<?> myTreeSet = (MyTreeSet<?>) o;
-
-        if (size != myTreeSet.size) return false;
-
         Iterator<E> e1 = iterator();
         Iterator<?> e2 = ((Set<?>) o).iterator();
         while (e1.hasNext() && e2.hasNext()) {
