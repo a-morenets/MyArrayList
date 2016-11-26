@@ -48,10 +48,13 @@ public class Main {
 
         System.out.println("=====================================");
         Set<Integer> intSet = new TreeSet<>();
-        System.out.println("Removed from empty set? " + intSet.remove(0));
+        System.out.println("Removed from empty set? " + intSet.remove(0)); // false
         intSet.add(99);
-//        intSet.add(null); // not allowed - NPE
         intSet.add(0);
+        System.out.println("Contains all? " + intSet.containsAll(Arrays.asList(0, 99, 99))); // true
+        System.out.println("Removed all? " + intSet.removeAll(Arrays.asList(10, null, 999, 12345))); // false
+        System.out.println("Removed all? " + intSet.removeAll(Arrays.asList(0, null, 99, 99, 12345))); // true
+//        intSet.add(null); // not allowed - NPE
 //        intSet.remove(null); // not allowed - NPE
 //        intSet.contains(null); // not allowed - NPE
 

@@ -165,21 +165,42 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        for (E e: c) {
+            if (!add(e))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
-    }
+        Objects.requireNonNull(c);
 
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
+        for (Object o: c) {
+            if (!contains(o))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
+        Objects.requireNonNull(c);
+
+        boolean isChanged = false;
+        for (Object o: c) {
+            if (o != null && remove(o))
+                isChanged = true;
+        }
+        return isChanged;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        Objects.requireNonNull(c);
+
         return false;
     }
 

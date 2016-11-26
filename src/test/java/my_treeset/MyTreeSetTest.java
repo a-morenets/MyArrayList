@@ -3,6 +3,8 @@ package my_treeset;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -102,32 +104,69 @@ public class MyTreeSetTest {
 
     @Test
     public void toArray() throws Exception {
-
+        //TODO
     }
 
     @Test
     public void toArray1() throws Exception {
+        //TODO
+    }
 
+    @Test(expected = NullPointerException.class)
+    public void addAll_null_NPE() throws Exception {
+        setEmpty.addAll(null);
     }
 
     @Test
     public void addAll() throws Exception {
+        //TODO
+    }
 
+    @Test(expected = NullPointerException.class)
+    public void containsAll_null_NPE() throws Exception {
+        set10elements.containsAll(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void containsAll_null_element_NPE() throws Exception {
+        List<Integer> listContainsNull = Arrays.asList(34, null, -4, -4);
+        set10elements.containsAll(listContainsNull);
     }
 
     @Test
     public void containsAll() throws Exception {
+        List<Integer> listContainsAll = Arrays.asList(34, -4, -4);
+        List<Integer> listNotContainsAll = Arrays.asList(34, -4, 555, 34);
 
+        assertFalse(setEmpty.containsAll(listContainsAll));
+
+        assertTrue(set10elements.containsAll(listContainsAll));
+        assertFalse(set10elements.containsAll(listNotContainsAll));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void retainAll_null_NPE() throws Exception {
+        setEmpty.retainAll(null);
     }
 
     @Test
     public void retainAll() throws Exception {
+        //TODO
+    }
 
+    @Test(expected = NullPointerException.class)
+    public void removeAll_null_NPE() throws Exception {
+        set10elements.removeAll(null);
     }
 
     @Test
     public void removeAll() throws Exception {
+        List<Integer> list = Arrays.asList(34, -4, 555, null, 34);
 
+        assertFalse(setEmpty.removeAll(list));
+
+        assertTrue(set10elements.removeAll(list));
+        assertFalse(set10elements.removeAll(list)); // again
     }
 
     @Test
@@ -141,7 +180,7 @@ public class MyTreeSetTest {
 
     @Test
     public void iterator() throws Exception {
-
+        //TODO
     }
 
     @Test
