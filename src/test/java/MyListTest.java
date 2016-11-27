@@ -367,6 +367,7 @@ public class MyListTest {
 
     @Test
     public void equals() throws Exception {
+        System.out.println("equals()");
         assertEquals(Arrays.asList(arrayWith3Elements), list3Elements);
     }
 }

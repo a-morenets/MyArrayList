@@ -11,7 +11,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     private int size = 0;
     private Comparator<E> comp;
 
-    //* Inner class Node */
+    /** Inner class Node */
     private class Node<E> {
         private E element;
         private Node<E> left;
@@ -50,11 +50,11 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             Node<E> parent = null;
             Node<E> current = root;
             while (current != null)
-                if (e.compareTo(current.element) < 0) {
+                if (compare(e, current.element) < 0) {
                     parent = current;
                     current = current.left;
                 }
-                else if (e.compareTo(current.element) > 0) {
+                else if (compare(e, current.element) > 0) {
                     parent = current;
                     current = current.right;
                 }
@@ -70,6 +70,19 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
 
         size++;
         return true; // Element inserted
+    }
+
+    /**
+     * Helper method - compares two values using Comparator or Comparable method
+     * @param o1 value 1
+     * @param o2 value 2
+     * @return
+     */
+    private int compare(E o1, E o2) {
+        if (comp == null)
+            return o1.compareTo(o2);
+        else
+            return comp.compare(o1, o2);
     }
 
     /**
@@ -89,11 +102,11 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         Node<E> parent = null;
         Node<E> current = root;
         while (current != null) {
-            if (((E) o).compareTo(current.element) < 0) {
+            if (compare(((E) o), current.element) < 0) {
                 parent = current;
                 current = current.left;
             }
-            else if (((E) o).compareTo(current.element) > 0) {
+            else if (compare(((E) o), current.element) > 0) {
                 parent = current;
                 current = current.right;
             }
@@ -110,7 +123,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (parent == null) {
                 root = current.right;
             } else {
-                if (((E) o).compareTo(parent.element) < 0)
+                if (compare(((E) o), parent.element) < 0)
                     parent.left = current.right;
                 else
                     parent.right = current.right;
@@ -155,12 +168,30 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] a = new Object[size];
+        int count = 0;
+
+        for (E e : this) {
+            a[count++] = e;
+        }
+
+        return a;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        Objects.requireNonNull(a);
+
+        if (a.length < size) {
+            a = (T[]) new Object[size];
+        }
+
+        int count = 0;
+        for (E e : this) {
+            a[count++] = (T) e;
+        }
+
+        return a;
     }
 
     @Override
@@ -201,7 +232,12 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     public boolean retainAll(Collection<?> c) {
         Objects.requireNonNull(c);
 
-        return false;
+        boolean isChanged = false;
+        for (E e: this) {
+            if (!c.contains(e) && remove(e))
+                isChanged = true;
+        }
+        return isChanged;
     }
 
     @Override
@@ -277,5 +313,16 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         int result = root != null ? root.hashCode() : 0;
         result = 31 * result + size;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (Iterator<E> itr = iterator(); itr.hasNext();) {
+            sb.append(itr.next());
+            if (itr.hasNext())
+                sb.append(", ");
+        }
+        return sb.toString() + "]";
     }
 }

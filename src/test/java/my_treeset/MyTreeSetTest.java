@@ -10,40 +10,31 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
+ * Tests for TreeSet<E>
  * Created by a-morenets on 26.11.2016.
  */
 public class MyTreeSetTest {
     private Set<Integer> setEmpty;
     private Set<Integer> set10elements;
-    private Set<Integer> set10elementsSameElements;
+    private Set<Integer> set10sameElements;
+    private Integer[] arrayEmpty;
+    private Integer[] array10elements;
+    private Integer[] array10sameElements;
 
     @Before
     public void setUp() throws Exception {
+        arrayEmpty = new Integer[] {};
+        array10elements = new Integer[] {5, -9, 34, 100500, 0, 2, -17, -3, -4, 7};
+        array10sameElements = new Integer[] {7, 5, -4, -9, -3, 34, -17, 100500, 2, 0};
+
         setEmpty = new MyTreeSet<>();
 
         set10elements = new MyTreeSet<>();
-        set10elements.add(5);
-        set10elements.add(-9);
-        set10elements.add(34);
-        set10elements.add(100500);
-        set10elements.add(0);
-        set10elements.add(2);
-        set10elements.add(-17);
-        set10elements.add(-3);
-        set10elements.add(-4);
-        set10elements.add(7);
+        set10elements.addAll(Arrays.asList(array10elements));
+
         // add same elements in other order
-        set10elementsSameElements = new MyTreeSet<>();
-        set10elementsSameElements.add(7);
-        set10elementsSameElements.add(5);
-        set10elementsSameElements.add(-4);
-        set10elementsSameElements.add(-9);
-        set10elementsSameElements.add(-3);
-        set10elementsSameElements.add(34);
-        set10elementsSameElements.add(-17);
-        set10elementsSameElements.add(100500);
-        set10elementsSameElements.add(2);
-        set10elementsSameElements.add(0);
+        set10sameElements = new MyTreeSet<>();
+        set10sameElements.addAll(Arrays.asList(array10sameElements));
     }
 
     @Test
@@ -104,12 +95,34 @@ public class MyTreeSetTest {
 
     @Test
     public void toArray() throws Exception {
-        //TODO
+        assertArrayEquals(arrayEmpty, setEmpty.toArray());
+
+        Arrays.sort(array10elements);
+        assertArrayEquals(array10elements, set10elements.toArray());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void toArray_null_NPE() throws Exception {
+        set10elements.toArray(null);
     }
 
     @Test
-    public void toArray1() throws Exception {
-        //TODO
+    public void toArray_existing() throws Exception {
+        Integer[] arr = {};
+        assertArrayEquals(arrayEmpty, setEmpty.toArray(arr));
+
+        Arrays.sort(array10elements);
+        assertArrayEquals(array10elements, set10elements.toArray(arr));
+
+        arr = new Integer[100];
+        Integer[] resArr = set10elements.toArray(arr);
+        assertEquals(100, resArr.length);
+        for (int i = 0; i < resArr.length; i++) {
+            if (i < 10)
+                assertEquals(array10elements[i], resArr[i]);
+            else
+                assertNull(resArr[i]);
+        }
     }
 
     @Test(expected = NullPointerException.class)
@@ -119,7 +132,14 @@ public class MyTreeSetTest {
 
     @Test
     public void addAll() throws Exception {
-        //TODO
+        assertTrue(setEmpty.addAll(Arrays.asList(arrayEmpty)));
+        assertTrue(setEmpty.isEmpty());
+        assertTrue(setEmpty.addAll(set10elements));
+        assertEquals(10, setEmpty.size());
+
+        // add all duplicate elements
+        assertFalse(set10sameElements.addAll(set10elements));
+        assertEquals(10, set10sameElements.size()); // no changes
     }
 
     @Test(expected = NullPointerException.class)
@@ -151,7 +171,12 @@ public class MyTreeSetTest {
 
     @Test
     public void retainAll() throws Exception {
-        //TODO
+        List<Integer> list = Arrays.asList(34, -4, 555, null, 34); // retain: 34, -4
+
+        assertFalse(setEmpty.retainAll(list));
+
+        assertTrue(set10elements.retainAll(list));
+        assertFalse(set10elements.retainAll(list)); // again
     }
 
     @Test(expected = NullPointerException.class)
@@ -185,9 +210,9 @@ public class MyTreeSetTest {
 
     @Test
     public void equals() throws Exception {
-        assertTrue(set10elements.equals(set10elementsSameElements));
+        assertTrue(set10elements.equals(set10sameElements));
 
         set10elements.remove(100500);
-        assertFalse(set10elements.equals(set10elementsSameElements));
+        assertFalse(set10elements.equals(set10sameElements));
     }
 }

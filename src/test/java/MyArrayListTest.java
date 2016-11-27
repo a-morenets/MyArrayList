@@ -2,6 +2,7 @@ import my_arraylist.MyArrayList;
 import org.junit.BeforeClass;
 
 /**
+ * Tests for ArrayList<E>
  * Created by a-morenets on 20.11.2016.
  */
 public class MyArrayListTest extends MyListTest {

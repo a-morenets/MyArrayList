@@ -51,6 +51,7 @@ public class Main {
         System.out.println("Removed from empty set? " + intSet.remove(0)); // false
         intSet.add(99);
         intSet.add(0);
+//        intSet.addAll(null);
         System.out.println("Contains all? " + intSet.containsAll(Arrays.asList(0, 99, 99))); // true
         System.out.println("Removed all? " + intSet.removeAll(Arrays.asList(10, null, 999, 12345))); // false
         System.out.println("Removed all? " + intSet.removeAll(Arrays.asList(0, null, 99, 99, 12345))); // true
