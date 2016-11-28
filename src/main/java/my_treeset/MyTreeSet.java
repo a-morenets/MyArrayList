@@ -23,6 +23,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     }
 
     public MyTreeSet() {
+        comp = (o1, o2) -> o1.compareTo(o2);
     }
 
     public MyTreeSet(Comparator<E> comp) {
@@ -50,11 +51,11 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             Node<E> parent = null;
             Node<E> current = root;
             while (current != null)
-                if (compare(e, current.element) < 0) {
+                if (comp.compare(e, current.element) < 0) {
                     parent = current;
                     current = current.left;
                 }
-                else if (compare(e, current.element) > 0) {
+                else if (comp.compare(e, current.element) > 0) {
                     parent = current;
                     current = current.right;
                 }
@@ -70,19 +71,6 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
 
         size++;
         return true; // Element inserted
-    }
-
-    /**
-     * Helper method - compares two values using Comparator or Comparable method
-     * @param o1 value 1
-     * @param o2 value 2
-     * @return
-     */
-    private int compare(E o1, E o2) {
-        if (comp == null)
-            return o1.compareTo(o2);
-        else
-            return comp.compare(o1, o2);
     }
 
     /**
@@ -102,11 +90,11 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         Node<E> parent = null;
         Node<E> current = root;
         while (current != null) {
-            if (compare(((E) o), current.element) < 0) {
+            if (comp.compare(((E) o), current.element) < 0) {
                 parent = current;
                 current = current.left;
             }
-            else if (compare(((E) o), current.element) > 0) {
+            else if (comp.compare(((E) o), current.element) > 0) {
                 parent = current;
                 current = current.right;
             }
@@ -123,7 +111,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (parent == null) {
                 root = current.right;
             } else {
-                if (compare(((E) o), parent.element) < 0)
+                if (comp.compare(((E) o), parent.element) < 0)
                     parent.left = current.right;
                 else
                     parent.right = current.right;

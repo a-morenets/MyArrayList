@@ -464,9 +464,11 @@ public class MyArrayList<E> implements List<E> {
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();
+
             E[] elementData = MyArrayList.this.data;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
+
             cursor = i + 1;
             return elementData[lastRet = i];
         }
@@ -475,6 +477,7 @@ public class MyArrayList<E> implements List<E> {
         public void remove() {
             if (lastRet < 0)
                 throw new IllegalStateException();
+
             checkForComodification();
 
             try {

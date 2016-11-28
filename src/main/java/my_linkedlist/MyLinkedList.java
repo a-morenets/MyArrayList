@@ -14,6 +14,7 @@ public class MyLinkedList<E> implements List<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size;
+    private int modCount;
 
     public MyLinkedList() {
         head = new Node<>();
@@ -302,8 +303,9 @@ public class MyLinkedList<E> implements List<E> {
      * @param <E>
      */
     private class MyIterator<E> implements Iterator<E> {
-        int cursor;
-        int lastRet = -1;
+        protected int cursor;
+        private int lastRet = -1;
+        private Object expectedModCount = modCount;
 
         @Override
         public boolean hasNext() {
@@ -315,6 +317,7 @@ public class MyLinkedList<E> implements List<E> {
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();
+
             cursor = i + 1;
             return (E) MyLinkedList.this.get(lastRet = i);
         }
@@ -328,7 +331,7 @@ public class MyLinkedList<E> implements List<E> {
                 MyLinkedList.this.remove(lastRet);
                 cursor = lastRet;
                 lastRet = -1;
-//                expectedModCount = modCount;
+                expectedModCount = modCount;
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
@@ -350,47 +353,53 @@ public class MyLinkedList<E> implements List<E> {
 
         @Override
         public boolean hasNext() {
+            // TODO
             return false;
         }
 
         @Override
         public E next() {
+            // TODO
             return null;
         }
 
         @Override
         public boolean hasPrevious() {
+            // TODO
             return false;
         }
 
         @Override
         public E previous() {
+            // TODO
             return null;
         }
 
         @Override
         public int nextIndex() {
+            // TODO
             return 0;
         }
 
         @Override
         public int previousIndex() {
+            // TODO
             return 0;
         }
 
         @Override
         public void remove() {
-
+            // TODO
         }
 
         @Override
         public void set(E e) {
-
+            // TODO
         }
 
         @Override
         public void add(E e) {
-
+            // TODO
         }
     }
 
