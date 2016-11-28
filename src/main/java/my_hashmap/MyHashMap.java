@@ -7,15 +7,18 @@ import java.util.*;
  * Created by a-morenets on 28.11.2016.
  */
 public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 16;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     private Node<K, V>[] data;
     private int capacity;
+    private float loadFactor;
+    private int modCount;
     private int size;
 
     /**
      * Inner class Node
      */
-    private class Node<K extends Comparable<K>, V> {
+    private class Node<K, V> {
         private K key;
         private V value;
         private Node<K, V> next;
@@ -52,16 +55,18 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     public MyHashMap() {
-        this(DEFAULT_CAPACITY);
+        this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    public MyHashMap(int capacity) {
+    public MyHashMap(int capacity, float loadFactor) {
         this.capacity = capacity;
+        this.loadFactor = loadFactor;
+        data = new Node[capacity];
     }
 
     /* Hash function */
     private int hash(K key) {
-        return key.hashCode();
+        return key == null ? 0 : key.hashCode();
     }
 
     @Override
@@ -123,6 +128,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             currentNode.setNext(new Node<>(key, value));
         }
         size++;
+        modCount++;
         return null;
     }
 
@@ -142,6 +148,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
                 else
                     prevNode.setNext(currentNode.getNext());
                 size--;
+                modCount++;
                 return originalValue;
             }
             if (currentNode.getNext() == null)
@@ -159,7 +166,12 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void clear() {
+        modCount++;
 
+        for (Node<K, V> node : data) {
+            node = null;
+        }
+        size = 0;
     }
 
     @Override
