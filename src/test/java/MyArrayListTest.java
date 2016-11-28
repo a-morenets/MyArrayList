@@ -378,7 +378,6 @@ public class MyArrayListTest {
 
     @Test
     public void equals() throws Exception {
-        System.out.println("equals()");
-        assertEquals(Arrays.asList(array3Elements), list3Elements);
+        assertTrue(list3Elements.equals(Arrays.asList(array3Elements)));
     }
 }
