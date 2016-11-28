@@ -56,7 +56,7 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new MyIterator<>();
+        return new MyIterator();
     }
 
     @Override
@@ -285,12 +285,12 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return new MyListIterator<>(0);
+        return new MyListIterator(0);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new MyListIterator<>(index);
+        return new MyListIterator(index);
     }
 
     @Override
@@ -300,12 +300,11 @@ public class MyLinkedList<E> implements List<E> {
 
     /**
      * Inner class MyIterator
-     * @param <E>
      */
-    private class MyIterator<E> implements Iterator<E> {
+    private class MyIterator implements Iterator<E> {
         protected int cursor;
         private int lastRet = -1;
-        private Object expectedModCount = modCount;
+        private int expectedModCount = modCount;
 
         @Override
         public boolean hasNext() {
@@ -341,7 +340,7 @@ public class MyLinkedList<E> implements List<E> {
     /**
      * Inner class MyListIterator
      */
-    private class MyListIterator<E> extends MyIterator<E> implements ListIterator<E> {
+    private class MyListIterator extends MyIterator implements ListIterator<E> {
         /**
          * Constructor
          * @param index

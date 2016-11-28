@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         List<Integer> a = new ArrayList<>(Arrays.asList(5, null, 0));
-        ListIterator<Integer> li = a.listIterator(1);
+        ListIterator li = a.listIterator(1);
         System.out.println("hasPrev: " + li.hasPrevious());
         System.out.println("hasNext: " + li.hasNext());
         System.out.println("prevInd = " + li.previousIndex());

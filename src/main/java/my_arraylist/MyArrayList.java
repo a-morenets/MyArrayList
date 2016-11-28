@@ -465,7 +465,7 @@ public class MyArrayList<E> implements List<E> {
             if (i >= size)
                 throw new NoSuchElementException();
 
-            E[] elementData = MyArrayList.this.data;
+            E[] elementData = (E[]) MyArrayList.this.data;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
 

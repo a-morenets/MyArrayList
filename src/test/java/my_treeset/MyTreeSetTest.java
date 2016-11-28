@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -58,13 +59,14 @@ public class MyTreeSetTest {
     public void add() throws Exception {
         assertTrue(setEmpty.add(5));
         assertEquals(1, setEmpty.size());
-        assertFalse(setEmpty.add(5));                 // again
+        assertFalse(setEmpty.add(5));                 // duplicate
         assertEquals(1, setEmpty.size());   // size not changed
         assertTrue(setEmpty.contains(5));
 
         assertFalse(set10elements.add(5)); // duplicate
         assertTrue(set10elements.add(-5));
         assertEquals(11, set10elements.size());
+        assertTrue(set10elements.contains(-5));
     }
 
     @Test(expected = NullPointerException.class)
@@ -78,6 +80,7 @@ public class MyTreeSetTest {
 
         assertTrue(set10elements.remove(5));
         assertFalse(set10elements.remove(5)); // 5 again
+        assertFalse(set10elements.contains(5));
     }
 
     @Test(expected = NullPointerException.class)
@@ -118,7 +121,7 @@ public class MyTreeSetTest {
         Integer[] resArr = set10elements.toArray(arr);
         assertEquals(100, resArr.length);
         for (int i = 0; i < resArr.length; i++) {
-            if (i < 10)
+            if (i < 10)                                     // only first 10 elements are not null
                 assertEquals(array10elements[i], resArr[i]);
             else
                 assertNull(resArr[i]);
@@ -138,8 +141,8 @@ public class MyTreeSetTest {
         assertEquals(10, setEmpty.size());
 
         // add all duplicate elements
-        assertFalse(set10sameElements.addAll(set10elements));
-        assertEquals(10, set10sameElements.size()); // no changes
+        assertFalse(set10elements.addAll(set10sameElements));
+        assertEquals(10, set10elements.size()); // no changes
     }
 
     @Test(expected = NullPointerException.class)
@@ -171,12 +174,14 @@ public class MyTreeSetTest {
 
     @Test
     public void retainAll() throws Exception {
-        List<Integer> list = Arrays.asList(34, -4, 555, null, 34); // retain: 34, -4
+        List<Integer> list = Arrays.asList(34, -4, 555, null, 34); // to retain: 34, -4
 
         assertFalse(setEmpty.retainAll(list));
 
         assertTrue(set10elements.retainAll(list));
+        assertEquals(2, set10elements.size());
         assertFalse(set10elements.retainAll(list)); // again
+        assertEquals(2, set10elements.size());
     }
 
     @Test(expected = NullPointerException.class)
@@ -186,12 +191,14 @@ public class MyTreeSetTest {
 
     @Test
     public void removeAll() throws Exception {
-        List<Integer> list = Arrays.asList(34, -4, 555, null, 34);
+        List<Integer> list = Arrays.asList(34, -4, 555, null, 34); // to remove: 34, -4
 
         assertFalse(setEmpty.removeAll(list));
 
         assertTrue(set10elements.removeAll(list));
+        assertEquals(8, set10elements.size());
         assertFalse(set10elements.removeAll(list)); // again
+        assertEquals(8, set10elements.size());
     }
 
     @Test
@@ -205,7 +212,19 @@ public class MyTreeSetTest {
 
     @Test
     public void iterator() throws Exception {
-        //TODO
+        Iterator<Integer> itrEmptyList = setEmpty.iterator();
+        assertFalse(itrEmptyList.hasNext());
+
+        Iterator<Integer> itr = set10elements.iterator();
+        assertTrue(itr.hasNext());
+        assertEquals(Integer.valueOf(-17), itr.next());
+        assertTrue(itr.hasNext());
+        assertEquals(Integer.valueOf(-9), itr.next());
+        itr.remove();
+        assertTrue(itr.hasNext());
+        assertEquals(Integer.valueOf(-4), itr.next());
+        assertFalse(itr.hasNext());
+        assertEquals(9, set10elements.size());
     }
 
     @Test

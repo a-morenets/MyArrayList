@@ -10,13 +10,14 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     private Node<E> root;
     private int size = 0;
     private Comparator<E> comp;
+    private int modCount;
 
     /** Inner class Node */
     private class Node<E> {
         private E element;
         private Node<E> left;
-
         private Node<E> right;
+
         public Node(E element) {
             this.element = element;
         }
@@ -70,6 +71,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         }
 
         size++;
+        modCount++;
         return true; // Element inserted
     }
 
@@ -99,15 +101,15 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                 current = current.right;
             }
             else
-                break; // Element is in the tree pointed at by current
+                break; // Element is in the tree pointed at by cursor
         }
 
         if (current == null)
             return false; // Element is not in the tree
 
-        // Case 1: current has no left children
+        // Case 1: cursor has no left children
         if (current.left == null) {
-            // Connect the parent with the right child of the current node
+            // Connect the parent with the right child of the cursor node
             if (parent == null) {
                 root = current.right;
             } else {
@@ -117,9 +119,9 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                     parent.right = current.right;
             }
         } else {
-            // Case 2: The current node has a left child
+            // Case 2: The cursor node has a left child
             // Locate the rightmost node in the left subtree of
-            // the current node and also its parent
+            // the cursor node and also its parent
             Node<E> parentOfRightMost = current;
             Node<E> rightMost = current.left;
 
@@ -128,18 +130,19 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                 rightMost = rightMost.right; // Keep going to the right
             }
 
-            // Replace the element in current by the element in rightMost
+            // Replace the element in cursor by the element in rightMost
             current.element = rightMost.element;
 
             // Eliminate rightmost node
             if (parentOfRightMost.right == rightMost)
                 parentOfRightMost.right = rightMost.left;
             else
-                // Special case: parentOfRightMost == current
+                // Special case: parentOfRightMost == cursor
                 parentOfRightMost.left = rightMost.left;
         }
 
         size--;
+        modCount++;
         return true; // Element deleted
     }
 
@@ -190,6 +193,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (!add(e))
                 return false;
         }
+        modCount++;
         return true;
     }
 
@@ -213,6 +217,10 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (o != null && remove(o))
                 isChanged = true;
         }
+
+        if (isChanged)
+            modCount++;
+
         return isChanged;
     }
 
@@ -225,6 +233,10 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (!c.contains(e) && remove(e))
                 isChanged = true;
         }
+
+        if (isChanged)
+            modCount++;
+
         return isChanged;
     }
 
@@ -232,6 +244,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     public void clear() {
         root = null;
         size = 0;
+        modCount++;
     }
 
     @Override
@@ -240,12 +253,15 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     }
 
     private class MyInorderIterator implements Iterator<E> {
-        // Store the elements in a list
-        private List list = new ArrayList<E>();
-        private int current = 0; // Point to the current element in list
+        // Store the elements in a inorderList
+        private List inorderList = new ArrayList<E>();
+
+        private int cursor = 0; // Point to the cursor element in inorderList
+        private int lastRet = -1;
+        private int expectedModCount = modCount;
 
         public MyInorderIterator() {
-            inorder(); // Traverse binary tree and store elements in list
+            inorder(); // Traverse binary tree and store elements in inorderList
         }
 
         /** Inorder traversal from the root*/
@@ -258,25 +274,49 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             if (root == null)
                 return;
             inorder(root.left);
-            list.add(root.element);
+            inorderList.add(root.element);
             inorder(root.right);
         }
 
         @Override
         public boolean hasNext() {
-            return current < list.size();
+            return cursor < inorderList.size();
         }
 
         @Override
         public E next() {
-            return (E) list.get(current++);
+            checkForComodification();
+
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+
+            cursor = i + 1;
+            return (E) inorderList.get(lastRet = i);
         }
 
         @Override
         public void remove() {
-            MyTreeSet.this.remove(list.get(current)); // Delete the current element
-            list.clear(); // Clear the list
-            inorder(); // Rebuild the list
+            if (lastRet < 0)
+                throw new IllegalStateException();
+
+            checkForComodification();
+
+            try {
+                MyTreeSet.this.remove(inorderList.get(cursor)); // remove the cursor element
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;
+                inorderList.clear(); // Clear the inorderList
+                inorder(); // Rebuild the inorderList
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
         }
     }
 
@@ -298,9 +338,10 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
 
     @Override
     public int hashCode() {
-        int result = root != null ? root.hashCode() : 0;
-        result = 31 * result + size;
-        return result;
+        int hashCode = 1;
+        for (E e : this)
+            hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+        return hashCode;
     }
 
     @Override
