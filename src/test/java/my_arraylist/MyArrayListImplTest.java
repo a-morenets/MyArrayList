@@ -1,3 +1,5 @@
+package my_arraylist;
+
 import my_arraylist.MyArrayList;
 import org.junit.Assert;
 import org.junit.Before;
@@ -302,7 +304,6 @@ public class MyArrayListImplTest {
         iterator.previous();
     }
 
-    @Ignore
     @Test(expected = ConcurrentModificationException.class)
     public void testListIteratorConcurrentException() throws Exception {
         for (Integer i : listWithThreeElementsOneIsNull) {
@@ -314,6 +315,7 @@ public class MyArrayListImplTest {
     @Test(expected = ConcurrentModificationException.class)
     public void testListIteratorMustBeConcurrentException() throws Exception {
         List<Integer> arrayList = new MyArrayList<>();
+//        List<Integer> arrayList = new ArrayList<>();
         arrayList.add(1);
         arrayList.add(2);
         arrayList.add(3);
@@ -321,14 +323,12 @@ public class MyArrayListImplTest {
         arrayList.add(5);
         int counter = 0;
         for (Integer i : arrayList) {
+            if (counter == 3)
+                System.out.println(arrayList.remove(arrayList.indexOf(i)));
             counter++;
-            if (counter == 3 ) {
-                arrayList.remove(arrayList.indexOf(i));
-            }
         }
     }
 
-    @Ignore
     @Test(expected = ConcurrentModificationException.class)
     public void testListIteratorConcurrentException2() throws Exception {
         for (Integer i : listWithThreeElementsOneIsNull) {

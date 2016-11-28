@@ -1,4 +1,6 @@
-import my_linkedlist.MyLinkedList;
+package my_arraylist;
+
+import my_arraylist.MyArrayList;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -11,10 +13,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for LinkedList<E>
+ * Tests for ArrayList<E>
  * Created by a-morenets on 20.11.2016.
  */
-public class MyLinkedListTest {
+public class MyArrayListTest {
 
     /** Empty list */
     protected static List<Integer> listEmpty;
@@ -30,8 +32,8 @@ public class MyLinkedListTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        listEmpty = new MyLinkedList<>();
-        list3Elements = new MyLinkedList<>();
+        listEmpty = new MyArrayList<>();
+        list3Elements = new MyArrayList<>();
     }
 
     @Before
@@ -81,6 +83,24 @@ public class MyLinkedListTest {
         assertEquals(Integer.valueOf(0), itr.next());
         assertFalse(itr.hasNext());
         assertEquals(2, list3Elements.size());
+    }
+
+    @Ignore
+    @Test(expected = ConcurrentModificationException.class)
+    public void testListIteratorMustBeConcurrentException() throws Exception {
+        List<Integer> arrayList = new MyArrayList<>();
+//        List<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        arrayList.add(4);
+        arrayList.add(5);
+        int counter = 0;
+        for (Integer i : arrayList) {
+            if (counter == 3)
+                System.out.println(arrayList.remove(arrayList.indexOf(i)));
+            counter++;
+        }
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -176,9 +196,9 @@ public class MyLinkedListTest {
         list3Elements.containsAll(null);
     }
 
-    @Ignore
     @Test
     public void containsAll() throws Exception {
+        assertFalse(listEmpty.containsAll(Arrays.asList(null, 0)));
         assertFalse(listEmpty.containsAll(Arrays.asList(5, null, 0, 999)));
 
         assertTrue(list3Elements.containsAll(Arrays.asList(null, 0)));
@@ -188,7 +208,7 @@ public class MyLinkedListTest {
     @Test
     public void addAll() throws Exception {
         assertTrue(listEmpty.addAll(Arrays.asList(null, 0, 999)));
-        assertTrue(listEmpty.equals(Arrays.asList(null, 0, 999)));
+        assertTrue(Arrays.asList(null, 0, 999).equals(listEmpty));
 
         assertTrue(list3Elements.addAll(Arrays.asList(null, 0, 999)));
         assertEquals(6, list3Elements.size());
@@ -202,11 +222,10 @@ public class MyLinkedListTest {
         list3Elements.addAll(100500, Arrays.asList(null, 0, 999));
     }
 
-    @Ignore
     @Test
     public void addAll_atIndex() throws Exception {
         assertTrue(listEmpty.addAll(0, Arrays.asList(null, 0, 999)));
-        assertTrue(listEmpty.equals(Arrays.asList(null, 0, 999)));
+        assertEquals(Arrays.asList(null, 0, 999), listEmpty);
 
         assertTrue(list3Elements.addAll(2, Arrays.asList(null, 0, 999)));
         assertEquals(6, list3Elements.size());
@@ -223,7 +242,6 @@ public class MyLinkedListTest {
     @Ignore
     @Test
     public void removeAll() throws Exception {
-        // TODO check test
         assertFalse(listEmpty.removeAll(Arrays.asList(null, 0)));
 
         assertTrue(list3Elements.removeAll(Arrays.asList(null, 0)));
@@ -239,7 +257,6 @@ public class MyLinkedListTest {
     @Ignore
     @Test
     public void retainAll() throws Exception {
-        // TODO check test
         assertFalse(listEmpty.retainAll(Arrays.asList(null, 0)));
 
         assertTrue(list3Elements.retainAll(Arrays.asList(null, 0)));
@@ -294,7 +311,6 @@ public class MyLinkedListTest {
         assertEquals(-1, list3Elements.lastIndexOf(100500));
     }
 
-    @Ignore
     @Test
     public void listIterator() throws Exception {
         // empty list - no previous, no next
@@ -326,14 +342,12 @@ public class MyLinkedListTest {
         assertEquals(Integer.valueOf(0), listIter.next());
     }
 
-    @Ignore
     @Test(expected = NoSuchElementException.class)
     public void listIterator_NoSuchElementException() throws Exception {
         ListIterator<Integer> listItrEmptyList = list3Elements.listIterator();
         listItrEmptyList.previous();
     }
 
-    @Ignore
     @Test
     public void listIterator_fromIndex() throws Exception {
         ListIterator<Integer> listIter = list3Elements.listIterator(1);

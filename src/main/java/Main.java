@@ -115,12 +115,21 @@ public class Main {
         System.out.println("Set is " + (myTreeSet.isEmpty() ? "" : "NOT ") + "empty.");
         System.out.println("set1 and set2 are " + (myTreeSet.equals(myTreeSet1) ? "" : "NOT ") + "equal");
 
+/*
         for (Iterator<Integer> itr = myTreeSet.iterator(); itr.hasNext();) {
             itr.remove();
         }
+*/
 
         System.out.println("size = " + myTreeSet.size());
         System.out.println("Set is " + (myTreeSet.isEmpty() ? "" : "NOT ") + "empty.");
+
+        System.out.println("*************************************************************************************");
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "one");
+        map.put(null, null);
+        map.put(null, null);
+        System.out.println(map.get(null));
     }
 
 }

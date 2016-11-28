@@ -69,7 +69,6 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             else
                 parent.right = createNewNode(e);
         }
-
         size++;
         modCount++;
         return true; // Element inserted
@@ -107,9 +106,9 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         if (current == null)
             return false; // Element is not in the tree
 
-        // Case 1: cursor has no left children
+        // Case 1: current has no left child
         if (current.left == null) {
-            // Connect the parent with the right child of the cursor node
+            // Connect the parent with the right child of the current node
             if (parent == null) {
                 root = current.right;
             } else {
@@ -119,9 +118,9 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                     parent.right = current.right;
             }
         } else {
-            // Case 2: The cursor node has a left child
+            // Case 2: The current node has a left child
             // Locate the rightmost node in the left subtree of
-            // the cursor node and also its parent
+            // the current node and also its parent
             Node<E> parentOfRightMost = current;
             Node<E> rightMost = current.left;
 
@@ -130,14 +129,14 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                 rightMost = rightMost.right; // Keep going to the right
             }
 
-            // Replace the element in cursor by the element in rightMost
+            // Replace the element in current by the element in rightMost
             current.element = rightMost.element;
 
             // Eliminate rightmost node
             if (parentOfRightMost.right == rightMost)
                 parentOfRightMost.right = rightMost.left;
             else
-                // Special case: parentOfRightMost == cursor
+                // Special case: parentOfRightMost == current
                 parentOfRightMost.left = rightMost.left;
         }
 
