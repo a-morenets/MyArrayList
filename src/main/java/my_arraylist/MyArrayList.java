@@ -461,6 +461,7 @@ public class MyArrayList<E> implements List<E> {
         @Override
         public E next() {
             checkForComodification();
+
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();

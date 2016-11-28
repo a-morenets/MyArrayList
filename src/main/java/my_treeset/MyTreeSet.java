@@ -229,9 +229,12 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         Objects.requireNonNull(c);
 
         boolean isChanged = false;
-        for (E e: this) {
-            if (!c.contains(e) && remove(e))
+        for (Iterator<E> itr = iterator(); itr. hasNext();) {
+            E e = itr.next();
+            if (!c.contains(e)) {
+                itr.remove();
                 isChanged = true;
+            }
         }
 
         if (isChanged)
@@ -303,10 +306,11 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
             checkForComodification();
 
             try {
-                MyTreeSet.this.remove(inorderList.get(cursor)); // remove the cursor element
+                MyTreeSet.this.remove(inorderList.get(lastRet)); // remove the cursor element
                 cursor = lastRet;
                 lastRet = -1;
                 expectedModCount = modCount;
+
                 inorderList.clear(); // Clear the inorderList
                 inorder(); // Rebuild the inorderList
             } catch (IndexOutOfBoundsException ex) {

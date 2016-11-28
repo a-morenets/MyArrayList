@@ -223,6 +223,14 @@ public class MyTreeSetTest {
         itr.remove();
         assertTrue(itr.hasNext());
         assertEquals(Integer.valueOf(-4), itr.next());
+        assertTrue(itr.hasNext());
+        itr.next();
+        itr.next();
+        itr.next();
+        itr.next();
+        itr.next();
+        itr.next();
+        itr.next();
         assertFalse(itr.hasNext());
         assertEquals(9, set10elements.size());
     }
