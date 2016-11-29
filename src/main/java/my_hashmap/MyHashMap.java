@@ -28,28 +28,6 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             this.value = value;
         }
 
-/*
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-*/
-
-        public Node<K, V> getNext() {
-            return next;
-        }
-
-        public void setValue(V newValue) {
-            value = newValue;
-        }
-
-        public void setNext(Node<K, V> next) {
-            this.next = next;
-        }
-
         @Override
         public String toString() {
             return "(" + key + "," + value + ")" + (next != null ? "->" + next.toString() : "");
@@ -83,6 +61,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
+
         return false;
     }
 
@@ -101,9 +80,9 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         while (currentNode != null) {
             if (currentNode.key.equals(key)) // element found with the given key
                 return currentNode.value;
-            if (currentNode.getNext() == null)
+            if (currentNode.next == null)
                 break;
-            currentNode = currentNode.getNext();
+            currentNode = currentNode.next;
         }
         return null;
     }
@@ -119,15 +98,15 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             while (currentNode != null) {
                 if (currentNode.key.equals(key)) { // element already exists with the given key
                     V originalValue = currentNode.value;
-                    currentNode.setValue(value);
+                    currentNode.value = value;
                     return originalValue;
                 }
-                if (currentNode.getNext() == null)
+                if (currentNode.next == null)
                     break;
-                currentNode = currentNode.getNext();
+                currentNode = currentNode.next;
             }
             // add new node
-            currentNode.setNext(new Node<>(key, value));
+            currentNode.next = new Node<>(key, value);
         }
         size++;
         modCount++;
@@ -170,17 +149,17 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             if (currentNode.key.equals(key)) { // element found with the given key
                 V originalValue = currentNode.value;
                 if (prevNode == null)
-                    data[index] = currentNode.getNext();
+                    data[index] = currentNode.next;
                 else
-                    prevNode.setNext(currentNode.getNext());
+                    prevNode.next = currentNode.next;
                 size--;
                 modCount++;
                 return originalValue;
             }
-            if (currentNode.getNext() == null)
+            if (currentNode.next == null)
                 break;
             prevNode = currentNode;
-            currentNode = currentNode.getNext();
+            currentNode = currentNode.next;
         }
         return null;
     }
@@ -208,9 +187,9 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
                 Node<K, V> currentNode = hashMapNode;
                 while (currentNode != null) {
                     set.add(currentNode.key);
-                    if (currentNode.getNext() == null)
+                    if (currentNode.next == null)
                         break;
-                    currentNode = currentNode.getNext();
+                    currentNode = currentNode.next;
                 }
             }
         }
