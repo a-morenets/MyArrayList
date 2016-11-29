@@ -168,10 +168,8 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public void clear() {
         modCount++;
-
-        for (Node<K, V> node : data) {
+        for (Node<K, V> node : data)
             node = null;
-        }
         size = 0;
     }
 
@@ -183,8 +181,6 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
                 Node<K, V> currentNode = hashMapNode;
                 while (currentNode != null) {
                     set.add(currentNode.key);
-                    if (currentNode.next == null)
-                        break;
                     currentNode = currentNode.next;
                 }
             }
@@ -194,11 +190,72 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
-        return null;
+        Collection<V> col = new AbstractCollection<V>() {
+            Iterator<V> vIterator = new Iterator<V>() {
+                @Override
+                public boolean hasNext() {
+                    return false;
+                }
+
+                @Override
+                public V next() {
+                    return null;
+                }
+            };
+
+            @Override
+            public Iterator<V> iterator() {
+                return null;
+            }
+
+            @Override
+            public int size() {
+                return MyHashMap.this.size;
+            }
+        };
+
+        for (Node<K, V> hashMapNode : data) {
+            if (hashMapNode != null) {
+                Node<K, V> currentNode = hashMapNode;
+                while (currentNode != null) {
+                    col.add(currentNode.value);
+                    currentNode = currentNode.next;
+                }
+            }
+        }
+
+        return col;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> set = new TreeSet<>();
+        for (Node<K, V> hashMapNode : data) {
+            if (hashMapNode != null) {
+                Node<K, V> currentNode = hashMapNode;
+                while (currentNode != null) {
+                    set.add(new Entry<K, V>() {
+                        @Override
+                        public K getKey() {
+                            return hashMapNode.key;
+                        }
+
+                        @Override
+                        public V getValue() {
+                            return hashMapNode.value;
+                        }
+
+                        @Override
+                        public V setValue(V value) {
+                            V oldValue = hashMapNode.value;
+                            hashMapNode.value = value;
+                            return oldValue;
+                        }
+                    });
+                    currentNode = currentNode.next;
+                }
+            }
+        }
+        return set;
     }
 }

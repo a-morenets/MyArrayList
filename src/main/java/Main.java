@@ -130,6 +130,8 @@ public class Main {
         map.put(null, null);
         map.put(null, null);
         System.out.println(map.get(null));
+
+        System.out.println(map.values().getClass().getName());
     }
 
 }
