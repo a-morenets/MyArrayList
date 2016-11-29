@@ -28,6 +28,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             this.value = value;
         }
 
+/*
         public K getKey() {
             return key;
         }
@@ -35,6 +36,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         public V getValue() {
             return value;
         }
+*/
 
         public Node<K, V> getNext() {
             return next;
@@ -97,8 +99,8 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         // cell contains a chain of node(s)
         Node<K, V> currentNode = data[index];
         while (currentNode != null) {
-            if (currentNode.getKey().equals(key)) // element found with the given key
-                return currentNode.getValue();
+            if (currentNode.key.equals(key)) // element found with the given key
+                return currentNode.value;
             if (currentNode.getNext() == null)
                 break;
             currentNode = currentNode.getNext();
@@ -115,8 +117,8 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         else { // cell contains a chain of node(s)
             Node<K, V> currentNode = data[index];
             while (currentNode != null) {
-                if (currentNode.getKey().equals(key)) { // element already exists with the given key
-                    V originalValue = currentNode.getValue();
+                if (currentNode.key.equals(key)) { // element already exists with the given key
+                    V originalValue = currentNode.value;
                     currentNode.setValue(value);
                     return originalValue;
                 }
@@ -129,7 +131,31 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
         size++;
         modCount++;
+
+        ensureCapacity();
         return null;
+    }
+
+    /**
+     * Grow capacity and rehash data if size / capacity > loadfactor
+     */
+    private void ensureCapacity() {
+        if (size >  capacity * loadFactor) {
+            Node<K, V>[] oldData = data;
+            capacity *= 2;
+            size = 0;
+
+            // rehash table
+            for (Node<K, V> node : oldData){
+                if (node != null) {
+                    Node<K, V> current = node;
+                    while (current != null) {
+                        put(current.key, current.value);
+                        current = current.next;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -141,8 +167,8 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         Node<K, V> currentNode = data[index];
         Node<K, V> prevNode = null;
         while (currentNode != null) {
-            if (currentNode.getKey().equals(key)) { // element found with the given key
-                V originalValue = currentNode.getValue();
+            if (currentNode.key.equals(key)) { // element found with the given key
+                V originalValue = currentNode.value;
                 if (prevNode == null)
                     data[index] = currentNode.getNext();
                 else
@@ -181,7 +207,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             if (hashMapNode != null) {
                 Node<K, V> currentNode = hashMapNode;
                 while (currentNode != null) {
-                    set.add(currentNode.getKey());
+                    set.add(currentNode.key);
                     if (currentNode.getNext() == null)
                         break;
                     currentNode = currentNode.getNext();
