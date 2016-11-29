@@ -80,8 +80,6 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         while (currentNode != null) {
             if (currentNode.key.equals(key)) // element found with the given key
                 return currentNode.value;
-            if (currentNode.next == null)
-                break;
             currentNode = currentNode.next;
         }
         return null;
@@ -101,8 +99,6 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
                     currentNode.value = value;
                     return originalValue;
                 }
-                if (currentNode.next == null)
-                    break;
                 currentNode = currentNode.next;
             }
             // add new node
@@ -116,7 +112,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     /**
-     * Grow capacity and rehash data if size / capacity > loadfactor
+     * Grow table and rehash data if (size > capacity * loadfactor)
      */
     private void ensureCapacity() {
         if (size >  capacity * loadFactor) {
@@ -156,8 +152,6 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
                 modCount++;
                 return originalValue;
             }
-            if (currentNode.next == null)
-                break;
             prevNode = currentNode;
             currentNode = currentNode.next;
         }
@@ -166,7 +160,9 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-
+        for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override
