@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
- * Tests for TreeSet<E>
+ * Tests for MyTreeSet<E>
  * Created by a-morenets on 26.11.2016.
  */
 public class MyTreeSetTest {

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for LinkedList<E>
+ * Tests for MyLinkedList<E>
  * Created by a-morenets on 20.11.2016.
  */
 public class MyLinkedListTest {

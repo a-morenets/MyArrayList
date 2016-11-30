@@ -130,8 +130,9 @@ public class Main {
         map.put(null, null);
         map.put(null, null);
         System.out.println(map.get(null));
+        System.out.println(map.get(100500));
 
-        System.out.println(map.values().getClass().getName());
+        System.out.println(map.keySet());
     }
 
 }

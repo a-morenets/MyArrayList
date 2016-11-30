@@ -61,12 +61,40 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-
+        int index = hash((K) key) % capacity;
+        if (data[index] == null) // cell is empty - the key is not stored in the map
+            return false;
+        // cell contains a chain of node(s)
+        Node<K, V> currentNode = data[index];
+        while (currentNode != null) {
+            // element found with the given key
+            if (currentNode.key == null) {
+                if (key == null)
+                    return true;
+            } else if (currentNode.key.equals(key))
+                return true;
+            currentNode = currentNode.next;
+        }
         return false;
     }
 
     @Override
     public boolean containsValue(Object value) {
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] != null) {
+                // cell contains a chain of node(s)
+                Node<K, V> currentNode = data[i];
+                while (currentNode != null) {
+                    // element found with the given value
+                    if (currentNode.value == null) {
+                        if (value == null)
+                            return true;
+                    } else if (currentNode.value.equals(value))
+                        return true;
+                    currentNode = currentNode.next;
+                }
+            }
+        }
         return false;
     }
 
@@ -78,7 +106,11 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         // cell contains a chain of node(s)
         Node<K, V> currentNode = data[index];
         while (currentNode != null) {
-            if (currentNode.key.equals(key)) // element found with the given key
+            // element found with the given key
+            if (currentNode.key == null) {
+                if (key == null)
+                    return currentNode.value;
+            } else if (currentNode.key.equals(key))
                 return currentNode.value;
             currentNode = currentNode.next;
         }
@@ -112,7 +144,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     /**
-     * Grow table and rehash data if (size > capacity * loadfactor)
+     * Grow table and rehash data if (size > capacity * loadFactor)
      */
     private void ensureCapacity() {
         if (size >  capacity * loadFactor) {
@@ -190,6 +222,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
+        // TODO
         Collection<V> col = new AbstractCollection<V>() {
             Iterator<V> vIterator = new Iterator<V>() {
                 @Override
