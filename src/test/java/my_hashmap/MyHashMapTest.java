@@ -98,8 +98,9 @@ public class MyHashMapTest {
         assertNull(map3elements.remove(2));
         assertEquals(2, map3elements.size());
         assertEquals("C", map3elements.remove(3));
+        assertEquals(1, map3elements.size());
         assertNull(map3elements.remove(100500));
-        assertEquals(2, map3elements.size()); // size not changed
+        assertEquals(1, map3elements.size()); // size not changed
     }
 
     @Test

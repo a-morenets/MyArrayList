@@ -126,11 +126,20 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         else { // cell contains a chain of node(s)
             Node<K, V> currentNode = data[index];
             while (currentNode != null) {
-                if (currentNode.key.equals(key)) { // element already exists with the given key
+                // element found with the given key
+                if (currentNode.key == null) {
+                    if (key == null) {
+                        V originalValue = currentNode.value;
+                        currentNode.value = value;
+                        return originalValue;
+                    }
+                } else if (currentNode.key.equals(key)) {
                     V originalValue = currentNode.value;
                     currentNode.value = value;
                     return originalValue;
                 }
+                if (currentNode.next == null)
+                    break;
                 currentNode = currentNode.next;
             }
             // add new node
@@ -174,7 +183,19 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
         Node<K, V> currentNode = data[index];
         Node<K, V> prevNode = null;
         while (currentNode != null) {
-            if (currentNode.key.equals(key)) { // element found with the given key
+            // element found with the given key
+            if (currentNode.key == null) {
+                if (key == null) {
+                    V originalValue = currentNode.value;
+                    if (prevNode == null)
+                        data[index] = currentNode.next;
+                    else
+                        prevNode.next = currentNode.next;
+                    size--;
+                    modCount++;
+                    return originalValue;
+                }
+            } else if (currentNode.key.equals(key)) {
                 V originalValue = currentNode.value;
                 if (prevNode == null)
                     data[index] = currentNode.next;
@@ -207,7 +228,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        Set<K> set = new TreeSet<K>();
+        Set<K> set = new HashSet<K>();
         for (Node<K, V> hashMapNode : data) {
             if (hashMapNode != null) {
                 Node<K, V> currentNode = hashMapNode;
@@ -262,7 +283,8 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        Set<Entry<K, V>> set = new TreeSet<>();
+        Set<Entry<K, V>> set = new HashSet<>();
+
         for (Node<K, V> hashMapNode : data) {
             if (hashMapNode != null) {
                 Node<K, V> currentNode = hashMapNode;
@@ -290,5 +312,29 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             }
         }
         return set;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MyHashMap<?, ?> myHashMap = (MyHashMap<?, ?>) o;
+
+        if (size != myHashMap.size) return false;
+
+        for (Node<K, V> node : data) {
+//            System.out.println(node.key + "=" + node.value + "\t" + myHashMap.get(node.key));
+            if (!myHashMap.get(node.key).equals(node.value))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(data);
+        result = 31 * result + size;
+        return result;
     }
 }

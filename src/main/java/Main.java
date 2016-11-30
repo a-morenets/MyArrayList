@@ -133,6 +133,7 @@ public class Main {
         System.out.println(map.get(100500));
 
         System.out.println(map.keySet());
+        System.out.println(map);
     }
 
 }
