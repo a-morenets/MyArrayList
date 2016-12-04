@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * TreeSet implementation
+ * null is NOT allowed
  * Created by a-morenets on 25.11.2016.
  */
 public class MyTreeSet<E extends Comparable<E>> implements Set<E> {

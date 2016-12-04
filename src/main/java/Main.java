@@ -1,3 +1,4 @@
+import my_hashmap.MyHashMap;
 import my_linkedlist.MyLinkedList;
 import my_treeset.MyTreeSet;
 
@@ -124,6 +125,7 @@ public class Main {
         System.out.println("size = " + myTreeSet.size());
         System.out.println("Set is " + (myTreeSet.isEmpty() ? "" : "NOT ") + "empty.");
 
+/*
         System.out.println("*************************************************************************************");
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "one");
@@ -131,9 +133,31 @@ public class Main {
         map.put(null, null);
         System.out.println(map.get(null));
         System.out.println(map.get(100500));
-
+        System.out.println(map.containsKey(null));
         System.out.println(map.keySet());
         System.out.println(map);
+*/
+
+        // TreeMap
+        System.out.println("*************************************************************************************");
+        Map map = new TreeMap();
+//        map.put(null,  "null"); // ошибки нет! ЕСТЬ!!!
+//        System.out.println(map.size()); // вывод: 1
+//        System.out.println(map.get(null)); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+//        map.put(0,  "0"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+
+        map.put(0,  "0"); // ошибки нет
+        map.put(1,  1); // ошибки нет
+        System.out.println(map.size()); // вывод: 2
+//        map.put(null,  "null"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+
+        // MyHashMap
+        System.out.println("*************************************************************************************");
+        Map myMap = new MyHashMap();
+        for (int i = 0; i < 20; i++) {
+            Box o = new Box((int) (Math.random() * 100));
+            myMap.put(o, i);
+        }
     }
 
 }

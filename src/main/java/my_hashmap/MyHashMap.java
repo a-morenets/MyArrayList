@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * HashMap implementation
+ * null as key is allowed
  * Created by a-morenets on 28.11.2016.
  */
 public class MyHashMap<K, V> implements Map<K, V> {
@@ -120,7 +121,6 @@ public class MyHashMap<K, V> implements Map<K, V> {
     @Override
     public V put(K key, V value) {
         int index = hash(key) % capacity;
-        System.out.println("key.hashCode() = " + key.hashCode() + "; capacity = " + capacity + "; hash = " + index);
         if (data[index] == null) // cell is empty
             // create new node and place it at index'th position in the data table
             data[index] = new Node<>(key, value);
