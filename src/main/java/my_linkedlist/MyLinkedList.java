@@ -177,8 +177,8 @@ public class MyLinkedList<E> implements List<E> {
 
     /**
      * Helper method
-     * @param index    index of Node to be returned
-     * @return Node at index or null
+     * @param index    index of Entry to be returned
+     * @return Entry at index or null
      */
     private Node<E> getNodeAt(int index) {
         checkRanges(index);
@@ -229,7 +229,7 @@ public class MyLinkedList<E> implements List<E> {
     }
 
     /**
-     * Helper method - removes Node at specified index and returns removed Node
+     * Helper method - removes Entry at specified index and returns removed Entry
      * @param index
      * @return
      */
@@ -242,7 +242,7 @@ public class MyLinkedList<E> implements List<E> {
     }
 
     /**
-     * Helper method - removes specified Node
+     * Helper method - removes specified Entry
      * @param node
      */
     private void removeNode(Node<E> node) {
@@ -449,9 +449,9 @@ public class MyLinkedList<E> implements List<E> {
      * @param <E>
      */
     private class Node<E> {
-        /** Previous Node object */
+        /** Previous Entry object */
         private Node<E> prev;
-        /** Next Node object */
+        /** Next Entry object */
         private Node<E> next;
         /** Data element */
         private E element;

@@ -12,7 +12,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     private Comparator<E> comp;
     private int modCount;
 
-    /** Inner class Node */
+    /** Inner class Entry */
     private class Node<E> {
         private E element;
         private Node<E> left;
@@ -75,9 +75,9 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     }
 
     /**
-     * Helper method - creates new Node
-     * @param e data to be placed in Node
-     * @return created Node
+     * Helper method - creates new Entry
+     * @param e data to be placed in Entry
+     * @return created Entry
      */
     private Node<E> createNewNode(E e) {
         return new Node<>(e);

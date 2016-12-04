@@ -6,7 +6,7 @@ import java.util.*;
  * HashMap implementation
  * Created by a-morenets on 28.11.2016.
  */
-public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
+public class MyHashMap<K, V> implements Map<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     private Node<K, V>[] data;
@@ -120,6 +120,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public V put(K key, V value) {
         int index = hash(key) % capacity;
+        System.out.println("key.hashCode() = " + key.hashCode() + "; capacity = " + capacity + "; hash = " + index);
         if (data[index] == null) // cell is empty
             // create new node and place it at index'th position in the data table
             data[index] = new Node<>(key, value);
@@ -160,6 +161,7 @@ public class MyHashMap<K extends Comparable<K>, V> implements Map<K, V> {
             Node<K, V>[] oldData = data;
             capacity *= 2;
             size = 0;
+            data = new Node[capacity];
 
             // rehash table
             for (Node<K, V> node : oldData){
