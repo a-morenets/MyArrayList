@@ -310,14 +310,6 @@ public class MyHashMap<K, V> implements Map<K, V> {
                         }
 
                         @Override
-                        public boolean equals(Object obj) {
-                            Entry<K, V> that = (Entry<K, V>) obj;
-                            System.out.println("entry this: " + this);
-                            System.out.println("entry that: " + that);
-                            return getKey().equals(that.getKey()) && getValue().equals(that.getValue());
-                        }
-
-                        @Override
                         public String toString() {
                             return getKey() + "=" + getValue();
                         }
@@ -337,13 +329,28 @@ public class MyHashMap<K, V> implements Map<K, V> {
         MyHashMap<?, ?> that = (MyHashMap<?, ?>) o;
 
         if (size != that.size) return false;
-        System.out.println("***********");
-        Set<Entry<K, V>> entrySet1 = entrySet();
-        Set<? extends Entry<?, ?>> entrySet2 = that.entrySet();
-        System.out.println(entrySet1);
-        System.out.println(entrySet2);
-        System.out.println(entrySet1.equals(entrySet2));
-        return entrySet1.equals(entrySet2);
+
+        try {
+            Iterator<Entry<K,V>> i = entrySet().iterator();
+            while (i.hasNext()) {
+                Entry<K,V> e = i.next();
+                K key = e.getKey();
+                V value = e.getValue();
+                if (value == null) {
+                    if (!(that.get(key)==null && that.containsKey(key)))
+                        return false;
+                } else {
+                    if (!value.equals(that.get(key)))
+                        return false;
+                }
+            }
+        } catch (ClassCastException unused) {
+            return false;
+        } catch (NullPointerException unused) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

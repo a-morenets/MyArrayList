@@ -162,15 +162,14 @@ public class Main {
 
         Map<Integer, String> myMap1 = new MyHashMap<>();
         myMap1.put(3, "S");
-//        myMap1.put(15, "");
+        myMap1.put(15, "F");
         Map<Integer, String> myMap2 = new MyHashMap<>();
-//        myMap2.put(15, "");
+        myMap2.put(15, "F");
         myMap2.put(3, "S");
 
         System.out.println(myMap1);
         System.out.println(myMap2);
-
-        System.out.println(myMap1.equals(myMap2));
+        System.out.println(myMap1.equals(myMap2)); // true
 
         Set entrySet1 = myMap1.entrySet();
         Set entrySet2 = myMap2.entrySet();
@@ -180,8 +179,7 @@ public class Main {
 
         System.out.println(entrySet1.size());
         System.out.println(entrySet2.size());
-
-        System.out.println(entrySet1.equals(entrySet2));
+        System.out.println(entrySet1.equals(entrySet2)); // false
     }
 
 }

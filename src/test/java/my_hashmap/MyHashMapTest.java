@@ -1,6 +1,7 @@
 package my_hashmap;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -141,6 +142,7 @@ public class MyHashMapTest {
         assertEquals(setStandard3elements, map3elements.keySet());
     }
 
+    @Ignore
     @Test
     public void values() throws Exception {
         fail("Test not implemented.");
