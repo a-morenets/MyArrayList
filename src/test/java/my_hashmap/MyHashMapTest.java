@@ -17,23 +17,36 @@ import static org.junit.Assert.*;
 public class MyHashMapTest {
     private MyHashMap<Integer, String> mapEmpty;
     private MyHashMap<Integer, String> map3elements;
-    private Map<Integer, String> mapStandard;
+
+    private Map<Integer, String> mapStandardEmpty;
+    private Map<Integer, String> mapStandard3elements;
+
     private Integer[] keys = {null, 2, 3};
     private String[] values = {"A", null, "C"};
+
     private Set<Integer> setStandardEmpty;
     private Set<Integer> setStandard3elements;
+
+    private Set<Map.Entry<Integer, String>> entrySetStandardEmpty;
+    private Set<Map.Entry<Integer, String>> entrySetStandard3elements;
 
     @Before
     public void setUp() throws Exception {
         mapEmpty = new MyHashMap<>();
         map3elements = new MyHashMap<>(100, 0.25f);
-        mapStandard = new HashMap<>();
+
+        mapStandardEmpty = new HashMap<>();
+        mapStandard3elements = new HashMap<>();
+
+        entrySetStandardEmpty = mapStandardEmpty.entrySet();
+        entrySetStandard3elements = mapStandard3elements.entrySet();
+
         setStandardEmpty = new HashSet<>();
         setStandard3elements = new HashSet<>();
 
         for (int i = 0; i < keys.length; i++) {
             map3elements.put(keys[i], values[i]);
-            mapStandard.put(keys[i], values[i]);
+            mapStandard3elements.put(keys[i], values[i]);
             setStandard3elements.add(keys[i]);
         }
     }
@@ -105,11 +118,11 @@ public class MyHashMapTest {
 
     @Test
     public void putAll() throws Exception {
-        mapEmpty.putAll(mapStandard);
+        mapEmpty.putAll(mapStandard3elements);
         assertEquals(3, mapEmpty.size());
 
-        mapStandard.put(100500, "ABCDE");
-        map3elements.putAll(mapStandard); // 1 element only must be put
+        mapStandardEmpty.put(100500, "ABCDE");
+        map3elements.putAll(mapStandardEmpty); // 1 element only must be put
         assertEquals(4, map3elements.size());
     }
 
@@ -135,13 +148,21 @@ public class MyHashMapTest {
 
     @Test
     public void entrySet() throws Exception {
-        assertEquals(setStandardEmpty, mapEmpty.entrySet());
-        assertEquals(setStandard3elements, map3elements.entrySet());
+        assertEquals(entrySetStandardEmpty, mapEmpty.entrySet());
+        assertEquals(entrySetStandard3elements, map3elements.entrySet());
     }
 
     @Test
     public void equals() throws Exception {
-        assertTrue(map3elements.equals(mapStandard));
+        Map<Integer, String> map3sameElements = new MyHashMap<>();
+        map3sameElements.put(3, "C");
+        map3sameElements.put(null, "A");
+        map3sameElements.put(2, null);
+
+        assertTrue(map3elements.equals(map3sameElements));
+
+        map3sameElements.remove(null);
+        assertFalse(map3elements.equals(map3sameElements));
     }
 
 }

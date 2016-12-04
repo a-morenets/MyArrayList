@@ -125,7 +125,6 @@ public class Main {
         System.out.println("size = " + myTreeSet.size());
         System.out.println("Set is " + (myTreeSet.isEmpty() ? "" : "NOT ") + "empty.");
 
-/*
         System.out.println("*************************************************************************************");
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "one");
@@ -136,28 +135,53 @@ public class Main {
         System.out.println(map.containsKey(null));
         System.out.println(map.keySet());
         System.out.println(map);
-*/
 
         // TreeMap
         System.out.println("*************************************************************************************");
-        Map map = new TreeMap();
-//        map.put(null,  "null"); // ошибки нет! ЕСТЬ!!!
-//        System.out.println(map.size()); // вывод: 1
-//        System.out.println(map.get(null)); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
-//        map.put(0,  "0"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+        Map treeMap = new TreeMap();
+//        treeMap.put(null,  "null"); // ошибки нет! ЕСТЬ!!!
+//        System.out.println(treeMap.size()); // вывод: 1
+//        System.out.println(treeMap.get(null)); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+//        treeMap.put(0,  "0"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
 
-        map.put(0,  "0"); // ошибки нет
-        map.put(1,  1); // ошибки нет
-        System.out.println(map.size()); // вывод: 2
-//        map.put(null,  "null"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
+        treeMap.put(0,  "0"); // ошибки нет
+        treeMap.put(1,  1); // ошибки нет
+        System.out.println(treeMap.size()); // вывод: 2
+//        treeMap.put(null,  "null"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
 
         // MyHashMap
         System.out.println("*************************************************************************************");
         Map myMap = new MyHashMap();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             Box o = new Box((int) (Math.random() * 100));
             myMap.put(o, i);
         }
+
+        System.out.println(myMap);
+        System.out.println(myMap.size());
+
+        Map<Integer, String> myMap1 = new MyHashMap<>();
+        myMap1.put(3, "S");
+//        myMap1.put(15, "");
+        Map<Integer, String> myMap2 = new MyHashMap<>();
+//        myMap2.put(15, "");
+        myMap2.put(3, "S");
+
+        System.out.println(myMap1);
+        System.out.println(myMap2);
+
+        System.out.println(myMap1.equals(myMap2));
+
+        Set entrySet1 = myMap1.entrySet();
+        Set entrySet2 = myMap2.entrySet();
+
+        System.out.println(entrySet1);
+        System.out.println(entrySet2);
+
+        System.out.println(entrySet1.size());
+        System.out.println(entrySet2.size());
+
+        System.out.println(entrySet1.equals(entrySet2));
     }
 
 }

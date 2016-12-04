@@ -31,7 +31,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
 
         @Override
         public String toString() {
-            return "(" + key + "," + value + ")" + (next != null ? "->" + next.toString() : "");
+            return key + "=" + value + (next != null ? ", " + next.toString() : "");
         }
     }
 
@@ -287,26 +287,39 @@ public class MyHashMap<K, V> implements Map<K, V> {
     public Set<Entry<K, V>> entrySet() {
         Set<Entry<K, V>> set = new HashSet<>();
 
-        for (Node<K, V> hashMapNode : data) {
-            if (hashMapNode != null) {
-                Node<K, V> currentNode = hashMapNode;
+        for (Node<K, V> node : data) {
+            if (node != null) {
+                Node<K, V> currentNode = node;
                 while (currentNode != null) {
                     set.add(new Entry<K, V>() {
                         @Override
                         public K getKey() {
-                            return hashMapNode.key;
+                            return node.key;
                         }
 
                         @Override
                         public V getValue() {
-                            return hashMapNode.value;
+                            return node.value;
                         }
 
                         @Override
                         public V setValue(V value) {
-                            V oldValue = hashMapNode.value;
-                            hashMapNode.value = value;
+                            V oldValue = node.value;
+                            node.value = value;
                             return oldValue;
+                        }
+
+                        @Override
+                        public boolean equals(Object obj) {
+                            Entry<K, V> that = (Entry<K, V>) obj;
+                            System.out.println("entry this: " + this);
+                            System.out.println("entry that: " + that);
+                            return getKey().equals(that.getKey()) && getValue().equals(that.getValue());
+                        }
+
+                        @Override
+                        public String toString() {
+                            return getKey() + "=" + getValue();
                         }
                     });
                     currentNode = currentNode.next;
@@ -321,16 +334,16 @@ public class MyHashMap<K, V> implements Map<K, V> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MyHashMap<?, ?> myHashMap = (MyHashMap<?, ?>) o;
+        MyHashMap<?, ?> that = (MyHashMap<?, ?>) o;
 
-        if (size != myHashMap.size) return false;
-
-        for (Node<K, V> node : data) {
-//            System.out.println(node.key + "=" + node.value + "\t" + myHashMap.get(node.key));
-            if (!myHashMap.get(node.key).equals(node.value))
-                return false;
-        }
-        return true;
+        if (size != that.size) return false;
+        System.out.println("***********");
+        Set<Entry<K, V>> entrySet1 = entrySet();
+        Set<? extends Entry<?, ?>> entrySet2 = that.entrySet();
+        System.out.println(entrySet1);
+        System.out.println(entrySet2);
+        System.out.println(entrySet1.equals(entrySet2));
+        return entrySet1.equals(entrySet2);
     }
 
     @Override
@@ -338,5 +351,21 @@ public class MyHashMap<K, V> implements Map<K, V> {
         int result = Arrays.hashCode(data);
         result = 31 * result + size;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("{");
+        Arrays.stream(data).forEach((x) -> {
+            if (x != null) {
+                sb.append(x);
+                sb.append(", ");
+            }
+        });
+
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("}");
+
+        return sb.toString();
     }
 }

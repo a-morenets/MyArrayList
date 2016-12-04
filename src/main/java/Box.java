@@ -10,7 +10,6 @@ public class Box {
 
     @Override
     public boolean equals(Object o) {
-        System.out.println("*** equals() ***");
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -21,7 +20,11 @@ public class Box {
 
     @Override
     public int hashCode() {
-        System.out.println("### hashCode() ###");
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "" + value;
     }
 }
