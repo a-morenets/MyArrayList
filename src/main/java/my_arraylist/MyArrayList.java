@@ -359,8 +359,7 @@ public class MyArrayList<E> implements List<E> {
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
-     * Increases the capacity to ensure that it can hold at least the
-     * number of elements specified by the minimum capacity argument.
+     *
      *
      * @param minCapacity the desired minimum capacity
      */
@@ -466,7 +465,7 @@ public class MyArrayList<E> implements List<E> {
             if (i >= size)
                 throw new NoSuchElementException();
 
-            E[] elementData = (E[]) MyArrayList.this.data;
+            E[] elementData = MyArrayList.this.data;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
 
@@ -587,7 +586,7 @@ public class MyArrayList<E> implements List<E> {
     public int hashCode() {
         int hashCode = 1;
         for (E e : this)
-            hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+            hashCode = 31 * hashCode + (e == null ? 0 : e.hashCode());
         return hashCode;
     }
 

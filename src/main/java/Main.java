@@ -144,8 +144,8 @@ public class Main {
 //        System.out.println(treeMap.get(null)); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
 //        treeMap.put(0,  "0"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
 
-        treeMap.put(0,  "0"); // ошибки нет
-        treeMap.put(1,  1); // ошибки нет
+        treeMap.put(0, "0"); // ошибки нет
+        treeMap.put(1, 1); // ошибки нет
         System.out.println(treeMap.size()); // вывод: 2
 //        treeMap.put(null,  "null"); // БАБАХ!! Exception in thread "main" java.lang.NullPointerException
 
@@ -180,6 +180,14 @@ public class Main {
         System.out.println(entrySet1.size());
         System.out.println(entrySet2.size());
         System.out.println(entrySet1.equals(entrySet2)); // false
+
+        List<String> al = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G"));
+        System.out.println(al);
+        for (String s : al) {
+            if (s.equals("F"))
+                al.remove(s);
+            System.out.println(al);
+        }
     }
 
 }
