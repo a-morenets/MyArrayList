@@ -14,18 +14,18 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     private int modCount;
 
     /** Inner class Entry */
-    private class Node<E> {
+    private static class Node<E> {
         private E element;
         private Node<E> left;
         private Node<E> right;
 
-        public Node(E element) {
+        Node(E element) {
             this.element = element;
         }
     }
 
-    public MyTreeSet() {
-        comp = (o1, o2) -> o1.compareTo(o2);
+    MyTreeSet() {
+        comp = Comparator.<E>naturalOrder();
     }
 
     public MyTreeSet(Comparator<E> comp) {
@@ -56,12 +56,10 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
                 if (comp.compare(e, current.element) < 0) {
                     parent = current;
                     current = current.left;
-                }
-                else if (comp.compare(e, current.element) > 0) {
+                } else if (comp.compare(e, current.element) > 0) {
                     parent = current;
                     current = current.right;
-                }
-                else
+                } else
                     return false; // Duplicate node not inserted
 
             // Create the new node and attach it to the parent node
@@ -256,6 +254,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     }
 
     private class MyInorderIterator implements Iterator<E> {
+
         // Store the elements in a inorderList
         private List inorderList = new ArrayList<E>();
 
@@ -263,7 +262,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         private int lastRet = -1;
         private int expectedModCount = modCount;
 
-        public MyInorderIterator() {
+        MyInorderIterator() {
             inorder(); // Traverse binary tree and store elements in inorderList
         }
 
@@ -334,7 +333,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
         while (e1.hasNext() && e2.hasNext()) {
             E o1 = e1.next();
             Object o2 = e2.next();
-            if (!(o1==null ? o2==null : o1.equals(o2)))
+            if (!(o1 == null ? o2 == null : o1.equals(o2)))
                 return false;
         }
         return !(e1.hasNext() || e2.hasNext());
@@ -344,7 +343,7 @@ public class MyTreeSet<E extends Comparable<E>> implements Set<E> {
     public int hashCode() {
         int hashCode = 1;
         for (E e : this)
-            hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+            hashCode = 31 * hashCode + (e == null ? 0 : e.hashCode());
         return hashCode;
     }
 

@@ -8,6 +8,7 @@ import java.util.function.Consumer;
  * Created by a-morenets on 20.11.2016.
  */
 public class MyArrayList<E> implements List<E> {
+
     /** Default initial capacity */
     private static final int DEFAULT_CAPACITY = 10;
 
@@ -500,6 +501,7 @@ public class MyArrayList<E> implements List<E> {
      * MyListIterator class
      */
     private class MyListIterator extends MyIterator implements ListIterator<E> {
+
         public MyListIterator(int index) {
             super();
             cursor = index;

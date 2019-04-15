@@ -19,12 +19,12 @@ public class MyHashMap<K, V> implements Map<K, V> {
     /**
      * Inner class Node
      */
-    private class Node<K, V> {
+    private static class Node<K, V> {
         private K key;
         private V value;
         private Node<K, V> next;
 
-        public Node(K key, V value) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -35,11 +35,11 @@ public class MyHashMap<K, V> implements Map<K, V> {
         }
     }
 
-    public MyHashMap() {
+    MyHashMap() {
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    public MyHashMap(int capacity, float loadFactor) {
+    MyHashMap(int capacity, float loadFactor) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         data = new Node[capacity];
@@ -65,9 +65,12 @@ public class MyHashMap<K, V> implements Map<K, V> {
         int index = hash((K) key) % capacity;
         if (data[index] == null) // cell is empty - the key is not stored in the map
             return false;
+
         // cell contains a chain of node(s)
         Node<K, V> currentNode = data[index];
+
         while (currentNode != null) {
+
             // element found with the given key
             if (currentNode.key == null) {
                 if (key == null)
@@ -81,11 +84,13 @@ public class MyHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        for (int i = 0; i < data.length; i++) {
-            if (data[i] != null) {
+        for (Node<K, V> node : data) {
+            if (node != null) {
+
                 // cell contains a chain of node(s)
-                Node<K, V> currentNode = data[i];
+                Node<K, V> currentNode = node;
                 while (currentNode != null) {
+
                     // element found with the given value
                     if (currentNode.value == null) {
                         if (value == null)
@@ -104,9 +109,12 @@ public class MyHashMap<K, V> implements Map<K, V> {
         int index = hash((K) key) % capacity;
         if (data[index] == null) // cell is empty - the key is not stored in the map
             return null;
+
         // cell contains a chain of node(s)
         Node<K, V> currentNode = data[index];
+
         while (currentNode != null) {
+
             // element found with the given key
             if (currentNode.key == null) {
                 if (key == null)
@@ -122,8 +130,10 @@ public class MyHashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         int index = hash(key) % capacity;
         if (data[index] == null) // cell is empty
+
             // create new node and place it at index'th position in the data table
             data[index] = new Node<>(key, value);
+
         else { // cell contains a chain of node(s)
             Node<K, V> currentNode = data[index];
             while (currentNode != null) {
@@ -181,10 +191,13 @@ public class MyHashMap<K, V> implements Map<K, V> {
         int index = hash((K) key) % capacity;
         if (data[index] == null) // cell is empty - the key is not stored in the map
             return null;
+
         // cell contains a chain of node(s)
         Node<K, V> currentNode = data[index];
         Node<K, V> prevNode = null;
+
         while (currentNode != null) {
+
             // element found with the given key
             if (currentNode.key == null) {
                 if (key == null) {
@@ -223,8 +236,9 @@ public class MyHashMap<K, V> implements Map<K, V> {
     @Override
     public void clear() {
         modCount++;
-        for (Node<K, V> node : data)
-            node = null;
+        for (int i = 0; i < data.length; i++) {
+            data[i] = null;
+        }
         size = 0;
     }
 
@@ -245,9 +259,12 @@ public class MyHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
+
         // TODO
         Collection<V> col = new AbstractCollection<V>() {
+
             Iterator<V> vIterator = new Iterator<V>() {
+
                 @Override
                 public boolean hasNext() {
                     return false;
@@ -292,6 +309,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
                 Node<K, V> currentNode = node;
                 while (currentNode != null) {
                     set.add(new Entry<K, V>() {
+
                         @Override
                         public K getKey() {
                             return node.key;

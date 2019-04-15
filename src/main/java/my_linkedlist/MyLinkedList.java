@@ -302,6 +302,7 @@ public class MyLinkedList<E> implements List<E> {
      * Inner class MyIterator
      */
     private class MyIterator implements Iterator<E> {
+
         protected int cursor;
         private int lastRet = -1;
         private int expectedModCount = modCount;
@@ -318,7 +319,7 @@ public class MyLinkedList<E> implements List<E> {
                 throw new NoSuchElementException();
 
             cursor = i + 1;
-            return (E) MyLinkedList.this.get(lastRet = i);
+            return MyLinkedList.this.get(lastRet = i);
         }
 
         @Override
@@ -341,6 +342,7 @@ public class MyLinkedList<E> implements List<E> {
      * Inner class MyListIterator
      */
     private class MyListIterator extends MyIterator implements ListIterator<E> {
+
         /**
          * Constructor
          * @param index
@@ -448,18 +450,21 @@ public class MyLinkedList<E> implements List<E> {
      * Inner class represents one node
      * @param <E>
      */
-    private class Node<E> {
+    private static class Node<E> {
+
         /** Previous Entry object */
         private Node<E> prev;
+
         /** Next Entry object */
         private Node<E> next;
+
         /** Data element */
         private E element;
 
         /**
          * Default constructor
          */
-        public Node() {
+        Node() {
             // empty
         }
 
@@ -467,7 +472,7 @@ public class MyLinkedList<E> implements List<E> {
          * Constructor
          * @param element    data element
          */
-        public Node(E element) {
+        Node(E element) {
             this.element = element;
         }
 
