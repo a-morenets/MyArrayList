@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +13,7 @@ import static org.junit.Assert.*;
  * Created by a-morenets on 30.11.2016.
  */
 public class MyHashMapTest {
+
     private MyHashMap<Integer, String> mapEmpty;
     private MyHashMap<Integer, String> map3elements;
 
@@ -27,6 +25,9 @@ public class MyHashMapTest {
 
     private Set<Integer> setStandardEmpty;
     private Set<Integer> setStandard3elements;
+
+    private Set<String> setValuesStandardEmpty;
+    private Set<String> setValuesStandard3elements;
 
     private Set<Map.Entry<Integer, String>> entrySetStandardEmpty;
     private Set<Map.Entry<Integer, String>> entrySetStandard3elements;
@@ -43,12 +44,14 @@ public class MyHashMapTest {
         entrySetStandard3elements = mapStandard3elements.entrySet();
 
         setStandardEmpty = new HashSet<>();
-        setStandard3elements = new HashSet<>();
+        setStandard3elements = new HashSet<>(Arrays.asList(keys));
+
+        setValuesStandardEmpty = new HashSet<>();
+        setValuesStandard3elements = new HashSet<>(Arrays.asList(values));
 
         for (int i = 0; i < keys.length; i++) {
             map3elements.put(keys[i], values[i]);
             mapStandard3elements.put(keys[i], values[i]);
-            setStandard3elements.add(keys[i]);
         }
     }
 
@@ -142,10 +145,10 @@ public class MyHashMapTest {
         assertEquals(setStandard3elements, map3elements.keySet());
     }
 
-    @Ignore
     @Test
     public void values() throws Exception {
-        fail("Test not implemented.");
+        assertEquals(setValuesStandardEmpty, mapEmpty.values());
+        assertEquals(setValuesStandard3elements, map3elements.values());
     }
 
     @Test

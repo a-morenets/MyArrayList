@@ -260,32 +260,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
     @Override
     public Collection<V> values() {
 
-        // TODO
-        Collection<V> col = new AbstractCollection<V>() {
-
-            Iterator<V> vIterator = new Iterator<V>() {
-
-                @Override
-                public boolean hasNext() {
-                    return false;
-                }
-
-                @Override
-                public V next() {
-                    return null;
-                }
-            };
-
-            @Override
-            public Iterator<V> iterator() {
-                return null;
-            }
-
-            @Override
-            public int size() {
-                return MyHashMap.this.size;
-            }
-        };
+        Collection<V> col = new HashSet<>();
 
         for (Node<K, V> hashMapNode : data) {
             if (hashMapNode != null) {
