@@ -259,7 +259,6 @@ public class MyHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
-
         Collection<V> col = new HashSet<>();
 
         for (Node<K, V> hashMapNode : data) {

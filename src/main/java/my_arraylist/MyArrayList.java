@@ -446,20 +446,26 @@ public class MyArrayList<E> implements List<E> {
     }
 
     /**
-     * Iter class
+     * Iterator class
      */
     private class MyIterator implements Iterator<E> {
         int cursor;         // index of next element to return
         int lastRet = -1;   // index of last element returned; -1 if no such
         int expectedModCount = modCount; // modifications counter must be equal to modCount of this list
 
+        {
+            System.out.println("new Iterator()");///////////////
+        }
+
         @Override
         public boolean hasNext() {
+            System.out.println("hasNext()");//////////////
             return cursor != size;
         }
 
         @Override
         public E next() {
+            System.out.println("next()");//////////////////
             checkForComodification();
 
             int i = cursor;

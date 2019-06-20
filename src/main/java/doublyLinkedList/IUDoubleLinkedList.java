@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class IUDoubleLinkedList<T> implements IndexedUnsortedList<T> {
 
-    private DLLNode<T> first; //firts node in list
+    private DLLNode<T> first; //first node in list
     private DLLNode<T> last;  //last node in list
     private int size;
     private int modCount; //The number of times this list has been structurally modified

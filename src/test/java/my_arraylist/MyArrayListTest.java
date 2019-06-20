@@ -89,7 +89,6 @@ public class MyArrayListTest {
     @Test(expected = ConcurrentModificationException.class)
     public void testListIteratorMustBeConcurrentException() throws Exception {
         List<Integer> arrayList = new MyArrayList<>();
-//        List<Integer> arrayList = new ArrayList<>();
         arrayList.add(1);
         arrayList.add(2);
         arrayList.add(3);
@@ -397,5 +396,12 @@ public class MyArrayListTest {
     @Test
     public void equals() throws Exception {
         assertTrue(list3Elements.equals(Arrays.asList(array3Elements)));
+    }
+
+    @Test
+    public void iter() {
+        for (Integer element : list3Elements) {
+            System.out.println("element = " + element);
+        }
     }
 }
