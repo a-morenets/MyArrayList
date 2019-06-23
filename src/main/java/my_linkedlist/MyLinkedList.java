@@ -295,6 +295,7 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
+        // TODO
         return null;
     }
 
@@ -345,7 +346,7 @@ public class MyLinkedList<E> implements List<E> {
 
         /**
          * Constructor
-         * @param index
+         * @param index start index
          */
         public MyListIterator(int index) {
             super();

@@ -1,6 +1,5 @@
 package my_arraylist;
 
-import my_arraylist.MyArrayList;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -9,8 +8,6 @@ import org.junit.Test;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Tests for MyArrayList<E>
@@ -19,16 +16,16 @@ import static org.junit.Assert.fail;
 public class MyArrayListTest {
 
     /** Empty list */
-    protected static List<Integer> listEmpty;
+    private static List<Integer> listEmpty;
 
     /** List with 3 elements */
-    protected static List<Integer> list3Elements;
+    private static List<Integer> list3Elements;
 
     /** Empty array */
     private Integer[] arrayEmpty = new Integer[] {};
 
     /** Array with 3 elements */
-    protected Integer[] array3Elements = new Integer[] {5, null, 0};
+    private Integer[] array3Elements = new Integer[] {5, null, 0};
 
     @BeforeClass
     public static void init() throws Exception {
@@ -207,7 +204,7 @@ public class MyArrayListTest {
     @Test
     public void addAll() throws Exception {
         assertTrue(listEmpty.addAll(Arrays.asList(null, 0, 999)));
-        assertTrue(Arrays.asList(null, 0, 999).equals(listEmpty));
+        assertEquals(Arrays.asList(null, 0, 999), listEmpty);
 
         assertTrue(list3Elements.addAll(Arrays.asList(null, 0, 999)));
         assertEquals(6, list3Elements.size());
@@ -228,7 +225,7 @@ public class MyArrayListTest {
 
         assertTrue(list3Elements.addAll(2, Arrays.asList(null, 0, 999)));
         assertEquals(6, list3Elements.size());
-        assertEquals(null, list3Elements.get(2));
+        assertNull(list3Elements.get(2));
         assertEquals(Integer.valueOf(0), list3Elements.get(3));
         assertEquals(Integer.valueOf(999), list3Elements.get(4));
     }
@@ -260,7 +257,7 @@ public class MyArrayListTest {
 
         assertTrue(list3Elements.retainAll(Arrays.asList(null, 0)));
         assertEquals(2, list3Elements.size());
-        assertEquals(null, list3Elements.get(0));
+        assertNull(list3Elements.get(0));
         assertEquals(Integer.valueOf(0), list3Elements.get(1));
     }
 
@@ -277,7 +274,7 @@ public class MyArrayListTest {
 
     @Test
     public void get() throws Exception {
-        assertEquals(null, list3Elements.get(1));
+        assertNull(list3Elements.get(1));
         assertEquals(Integer.valueOf(0), list3Elements.get(2));
     }
 
@@ -326,7 +323,7 @@ public class MyArrayListTest {
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
         // next()
-        assertEquals(null, listIter.next());
+        assertNull(listIter.next());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
         // next()
@@ -354,7 +351,7 @@ public class MyArrayListTest {
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
         // next()
-        assertEquals(null, listIter.next());
+        assertNull(listIter.next());
         assertTrue(listIter.hasPrevious());
         assertTrue(listIter.hasNext());
         // next()
@@ -395,13 +392,6 @@ public class MyArrayListTest {
 
     @Test
     public void equals() throws Exception {
-        assertTrue(list3Elements.equals(Arrays.asList(array3Elements)));
-    }
-
-    @Test
-    public void iter() {
-        for (Integer element : list3Elements) {
-            System.out.println("element = " + element);
-        }
+        assertEquals(list3Elements, Arrays.asList(array3Elements));
     }
 }
